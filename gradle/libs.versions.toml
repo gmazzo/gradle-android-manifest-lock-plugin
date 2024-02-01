@@ -1,0 +1,10 @@
+[versions]
+kotlin = "1.9.22"
+agp = "8.2.2"
+
+[plugins]
+android = { id = "com.android.library", version.ref = "agp" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-samReceiver = { id = "org.jetbrains.kotlin.plugin.sam.with.receiver", version.ref = "kotlin" }
+gradle-pluginPublish = { id = "com.gradle.plugin-publish", version = "1.2.1" }
+publicationsReport = { id = "io.github.gmazzo.publications.report", version = "1.2.5" }
