@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "io.github.gmazzo.android.manifest.lock"
-description = "AndroidManifest lock plugin"
+description = "A gradle Gradle to control what Permissions, SDK-level, and other PlayStore listing sensitive settings is added into the Android Manifest"
 version = providers
     .exec { commandLine("git", "describe", "--tags", "--always") }
     .standardOutput.asText.get().trim().removePrefix("v")
@@ -14,12 +14,13 @@ version = providers
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(11))
 
 gradlePlugin {
-    website.set("https://github.com/gmazzo/gradle-android-test-aggregation-plugin")
-    vcsUrl.set("https://github.com/gmazzo/gradle-android-test-aggregation-plugin")
+    website.set("https://github.com/gmazzo/gradle-android-manifest-lock-plugin")
+    vcsUrl.set("https://github.com/gmazzo/gradle-android-manifest-lock-plugin")
 
     plugins.create("manifestLock") {
         id = "io.github.gmazzo.android.manifest.lock"
         displayName = name
+        description = project.description
         implementationClass = "io.github.gmazzo.android.manifest.lock.GradleAndroidManifestLockPluginPlugin"
         tags.addAll("android", "agp", "manifest", "lock", "lockfile")
     }
