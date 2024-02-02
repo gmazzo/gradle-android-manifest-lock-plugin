@@ -21,7 +21,7 @@ gradlePlugin {
         id = "io.github.gmazzo.android.manifest.lock"
         displayName = name
         description = project.description
-        implementationClass = "io.github.gmazzo.android.manifest.lock.GradleAndroidManifestLockPluginPlugin"
+        implementationClass = "io.github.gmazzo.android.manifest.lock.AndroidManifestLockPlugin"
         tags.addAll("android", "agp", "manifest", "lock", "lockfile")
     }
 }
@@ -38,6 +38,8 @@ dependencies {
 
     compileOnly(gradleKotlinDsl())
     compileOnly(plugin(libs.plugins.android))
+
+    testImplementation(gradleKotlinDsl())
 }
 
 tasks.publish {
