@@ -28,8 +28,10 @@ gradlePlugin {
 
 samWithReceiver.annotation(HasImplicitReceiver::class.qualifiedName!!)
 
+kotlin.compilerOptions.freeCompilerArgs.add("-Xjvm-default=all")
+
 testing.suites.withType<JvmTestSuite> {
-    useKotlinTest()
+    useKotlinTest(libs.versions.kotlin)
 }
 
 dependencies {
@@ -37,9 +39,14 @@ dependencies {
         dependency.get().run { create("$pluginId:$pluginId.gradle.plugin:$version") }
 
     compileOnly(gradleKotlinDsl())
-    compileOnly(plugin(libs.plugins.android))
+    compileOnly(plugin(libs.plugins.android.library))
 
     testImplementation(gradleKotlinDsl())
+    testImplementation(plugin(libs.plugins.android.library))
+}
+
+tasks.test {
+    javaLauncher = javaToolchains.launcherFor { languageVersion = JavaLanguageVersion.of(17) }
 }
 
 tasks.publish {

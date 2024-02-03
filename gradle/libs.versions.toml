@@ -2,8 +2,15 @@
 kotlin = "1.9.22"
 agp = "8.2.2"
 
+[libraries]
+androidx-workManager = { module = "androidx.work:work-runtime-ktx", version = "2.9.0" }
+google-services-maps = { module = "com.google.android.gms:play-services-maps", version = "18.2.0" }
+leakCanary = { module = "com.squareup.leakcanary:leakcanary-android", version = "2.13" }
+
 [plugins]
-android = { id = "com.android.library", version.ref = "agp" }
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-samReceiver = { id = "org.jetbrains.kotlin.plugin.sam.with.receiver", version.ref = "kotlin" }
 gradle-pluginPublish = { id = "com.gradle.plugin-publish", version = "1.2.1" }
