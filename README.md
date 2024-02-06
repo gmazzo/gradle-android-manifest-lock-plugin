@@ -16,40 +16,45 @@ plugins {
 ```
 The `androidManifestLock` task will be added to the build, and automatically bind to `check`.
 When run, an `src/main/AndroidManifest.lock` (default location) file will be created with a content similar to:
-```
-NAMESPACE: io.github.gmazzo.android.manifest.lock.demo
-SDKS: 
-  min=24
-  target=34
-PERMISSIONS:
-  android.permission.ACCESS_NETWORK_STATE
-  android.permission.FOREGROUND_SERVICE
-  android.permission.RECEIVE_BOOT_COMPLETED
-  android.permission.WAKE_LOCK
-  io.github.gmazzo.android.manifest.lock.demo.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
-EXPORTS:
-  activity#io.github.gmazzo.android.manifest.lock.demo.MainActivity
-  receiver#androidx.work.impl.diagnostics.DiagnosticsReceiver
-  service#androidx.work.impl.background.systemjob.SystemJobService
-
-VARIANT: debug
-  PERMISSIONS:
-    android.permission.POST_NOTIFICATIONS
-    android.permission.READ_EXTERNAL_STORAGE
-    android.permission.WRITE_EXTERNAL_STORAGE
-  EXPORTS:
-    activity#leakcanary.internal.activity.LeakActivity
-    activity-alias#leakcanary.internal.activity.LeakLauncherActivity
-
-VARIANT: release
-  PERMISSIONS:
-    android.permission.INTERNET
-  FEATURES:
-    glEsVersion=0x00020000, required=true
-  LIBRARIES:
-    org.apache.http.legacy: required=false
-
-FINGERPRINT: 8d7b19845c31098587a985ad4246cfdd
+```yaml
+main:
+  namespace: io.github.gmazzo.android.manifest.lock.demo
+  minSDK: 24
+  targetSDK: 34
+  permissions:
+    - android.permission.ACCESS_NETWORK_STATE
+    - android.permission.FOREGROUND_SERVICE
+    - android.permission.RECEIVE_BOOT_COMPLETED
+    - android.permission.WAKE_LOCK
+    - io.github.gmazzo.android.manifest.lock.demo.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+  features:
+    - glEsVersion: 0x00020000
+      required: true
+  libraries:
+    - org.apache.http.legacy:
+        required: false
+  exports:
+    - androidx.work.impl.background.systemjob.SystemJobService:
+        type: service
+    - androidx.work.impl.diagnostics.DiagnosticsReceiver:
+        type: receiver
+    - io.github.gmazzo.android.manifest.lock.demo.MainActivity:
+        type: activity
+variants:
+  debug:
+    permissions:
+      - android.permission.POST_NOTIFICATIONS
+      - android.permission.READ_EXTERNAL_STORAGE
+      - android.permission.WRITE_EXTERNAL_STORAGE
+    exports:
+      - leakcanary.internal.activity.LeakActivity:
+          type: activity
+      - leakcanary.internal.activity.LeakLauncherActivity:
+          type: activity-alias
+  release:
+    permissions:
+      - android.permission.INTERNET
+fingerprint: 694fbda42c99ba8da0e8efe813347327
 ```
 You can later commit this file to keep track and detect unnoticed changes (by introducing/bumping a 3rd party dependency for instance).
 

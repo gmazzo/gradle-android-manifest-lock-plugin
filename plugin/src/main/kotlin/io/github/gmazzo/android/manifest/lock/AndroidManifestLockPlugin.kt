@@ -50,7 +50,7 @@ class AndroidManifestLockPlugin : Plugin<Project> {
 
             lockFile
                 .convention(manifest.map { file ->
-                    val lock = file.resolveSibling("${file.nameWithoutExtension}.lock")
+                    val lock = file.resolveSibling("${file.nameWithoutExtension}.lock.yaml")
                     layout.projectDirectory.file(lock.path)
                 })
                 .finalizeValueOnRead()

@@ -1,0 +1,38 @@
+main:
+  namespace: io.github.gmazzo.android.manifest.lock.demo
+  minSDK: 24
+  targetSDK: 34
+  permissions:
+  - android.permission.ACCESS_NETWORK_STATE
+  - android.permission.FOREGROUND_SERVICE
+  - android.permission.RECEIVE_BOOT_COMPLETED
+  - android.permission.WAKE_LOCK
+  - io.github.gmazzo.android.manifest.lock.demo.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+  features:
+  - glEsVersion: 0x00020000
+    required: true
+  libraries:
+  - org.apache.http.legacy:
+      required: false
+  exports:
+  - androidx.work.impl.background.systemjob.SystemJobService:
+      type: service
+  - androidx.work.impl.diagnostics.DiagnosticsReceiver:
+      type: receiver
+  - io.github.gmazzo.android.manifest.lock.demo.MainActivity:
+      type: activity
+variants:
+  debug:
+    permissions:
+    - android.permission.POST_NOTIFICATIONS
+    - android.permission.READ_EXTERNAL_STORAGE
+    - android.permission.WRITE_EXTERNAL_STORAGE
+    exports:
+    - leakcanary.internal.activity.LeakActivity:
+        type: activity
+    - leakcanary.internal.activity.LeakLauncherActivity:
+        type: activity-alias
+  release:
+    permissions:
+    - android.permission.INTERNET
+fingerprint: 694fbda42c99ba8da0e8efe813347327
