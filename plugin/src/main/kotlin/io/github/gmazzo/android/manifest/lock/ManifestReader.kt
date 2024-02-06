@@ -3,7 +3,6 @@ package io.github.gmazzo.android.manifest.lock
 import org.w3c.dom.Node
 import org.w3c.dom.NodeList
 import java.io.File
-import java.util.TreeMap
 import javax.xml.namespace.NamespaceContext
 import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.xpath.XPathConstants
@@ -26,7 +25,7 @@ internal object ManifestReader {
     private val getLibraries = xPath.compile("/manifest/application/uses-library")
     private val getExports = xPath.compile("//*[@android:exported='true']")
 
-    fun parse(manifest: File, variantName: String? = null): Manifest {
+    fun parse(manifest: File): Manifest {
         val source = docBuilder.parse(manifest)
         val packageName = getPackageName.evaluate(source).takeUnless { it.isBlank() }
         val minSDK = getMinSDK.evaluate(source).toIntOrNull()
@@ -34,49 +33,31 @@ internal object ManifestReader {
         val permissions = getPermissions.collect(source)
         val features = getFeatures.collect(source)
         val libraries = getLibraries.collect(source)
-        val exports = getExports
-            .collect(source) { "${it.localName}#${it.androidName}" }
-            .toSortedSet()
-
-        return Manifest(
-            variantName,
-            packageName,
-            minSDK,
-            targetSDK,
-            permissions,
-            features,
-            libraries,
-            exports
-        )
-    }
-
-    private fun <Item> XPathExpression.collect(
-        source: Any,
-        mapper: (Node) -> Item
-    ): Sequence<Item> {
-        val items = evaluate(source, XPathConstants.NODESET) as NodeList
-        return (0 until items.length).asSequence().map(items::item).map(mapper)
-    }
-
-    private fun XPathExpression.collect(source: Any) = TreeMap<String, MutableMap<String, String>>().apply {
-        collect(source) {
-            val name = it.androidName.orEmpty()
-            val values = linkedMapOf<String, String>()
-            (0 until it.attributes.length).forEach { j ->
-                val attr = it.attributes.item(j)
-
-                if (attr.namespaceURI == ANDROID_NS && attr.localName != "name") {
-                    values[attr.localName] = attr.nodeValue
-                }
-            }
-            name to values
-        }.forEach { (name, attrs) ->
-            put(name, attrs)?.putAll(attrs)
+        val exports = getExports.collect(source) { node, attrs ->
+            attrs.keys.retainAll(setOf("name"))
+            attrs["type"] = node.nodeName
         }
+
+        return Manifest(packageName, minSDK, targetSDK, permissions, features, libraries, exports)
     }
 
-    private val Node.androidName
-        get() = attributes.getNamedItemNS(ANDROID_NS, "name")?.nodeValue
+    private fun XPathExpression.collect(
+        source: Any,
+        adapter: ((Node, MutableMap<String, String>) -> Unit)? = null,
+    ): List<Manifest.Entry>? {
+        val items = evaluate(source, XPathConstants.NODESET) as NodeList
+        return (0 until items.length).asSequence().map(items::item).map { node ->
+            val attrs = (0 until node.attributes.length).asSequence()
+                .map(node.attributes::item)
+                .filter { it.namespaceURI == ANDROID_NS }
+                .map { it.localName to it.nodeValue }
+                .toMap(linkedMapOf())
+                .also { adapter?.invoke(node, it) }
+            val name = attrs.remove("name")
+
+            Manifest.Entry(name, attrs.takeUnless { it.isEmpty() })
+        }.toList().sortedBy { it.name }.takeUnless { it.isEmpty() }
+    }
 
     private object AndroidNamespaceContext : NamespaceContext {
 

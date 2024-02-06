@@ -37,10 +37,9 @@ abstract class AndroidManifestLockTask : DefaultTask() {
     @TaskAction
     fun generateLock() {
         val manifests = variantManifests.get()
-            .entries
-            .map { (variantName, manifest) -> ManifestReader.parse(manifest.asFile, variantName) }
+            .mapValues { (_, manifest) -> ManifestReader.parse(manifest.asFile) }
 
-        val lock = ManifestLock(manifests)
+        val lock = ManifestLockFactory.create(manifests)
 
         val file = lockFile.get().asFile
         val content = file.takeIf { it.exists() }?.readText()

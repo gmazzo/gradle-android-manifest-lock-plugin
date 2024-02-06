@@ -1,8 +1,10 @@
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.samReceiver)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.gradle.pluginPublish)
     alias(libs.plugins.publicationsReport)
+    jacoco
 }
 
 group = "io.github.gmazzo.android.manifest.lock"
@@ -41,12 +43,19 @@ dependencies {
     compileOnly(gradleKotlinDsl())
     compileOnly(plugin(libs.plugins.android.library))
 
+    implementation(libs.kotlin.serialization.yaml)
+
     testImplementation(gradleKotlinDsl())
     testImplementation(plugin(libs.plugins.android.library))
 }
 
 tasks.test {
     javaLauncher = javaToolchains.launcherFor { languageVersion = JavaLanguageVersion.of(17) }
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+    reports.xml.required = true
 }
 
 tasks.publish {
