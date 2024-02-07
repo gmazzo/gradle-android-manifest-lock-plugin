@@ -15,12 +15,12 @@ main:
   - org.apache.http.legacy:
       required: false
   exports:
-  - androidx.work.impl.background.systemjob.SystemJobService:
-      type: service
-  - androidx.work.impl.diagnostics.DiagnosticsReceiver:
-      type: receiver
-  - io.github.gmazzo.android.manifest.lock.demo.MainActivity:
-      type: activity
+    activity:
+    - io.github.gmazzo.android.manifest.lock.demo.MainActivity
+    service:
+    - androidx.work.impl.background.systemjob.SystemJobService
+    receiver:
+    - androidx.work.impl.diagnostics.DiagnosticsReceiver
 variants:
   debug:
     permissions:
@@ -28,11 +28,11 @@ variants:
     - android.permission.READ_EXTERNAL_STORAGE
     - android.permission.WRITE_EXTERNAL_STORAGE
     exports:
-    - leakcanary.internal.activity.LeakActivity:
-        type: activity
-    - leakcanary.internal.activity.LeakLauncherActivity:
-        type: activity-alias
+      activity:
+      - leakcanary.internal.activity.LeakActivity
+      activity-alias:
+      - leakcanary.internal.activity.LeakLauncherActivity
   release:
     permissions:
     - android.permission.INTERNET
-fingerprint: 694fbda42c99ba8da0e8efe813347327
+fingerprint: 25d1dd4e3d17990162837964cdd8d992

@@ -24,9 +24,9 @@ class ManifestLockFactoryTest {
             Entry("lib1"),
             Entry("lib2", mapOf("required" to "true")),
         ),
-        exports = listOf(
-            Entry("export1", mapOf("type" to "activity")),
-            Entry("export2", mapOf("type" to "service")),
+        exports = mapOf(
+            "activity" to setOf("export1"),
+            "service" to setOf("export2"),
         )
     )
 
@@ -62,12 +62,12 @@ class ManifestLockFactoryTest {
               - lib2:
                   required: true
               exports:
-              - export1:
-                  type: activity
-              - export2:
-                  type: service
-            fingerprint: d69a81c5982e1cb8864d6fa9f8a21589
-            
+                activity:
+                - export1
+                service:
+                - export2
+            fingerprint: 119f92fb3493aeaaadffb717199050e7
+
             """.trimIndent(),
             lock.content
         )
@@ -104,17 +104,17 @@ class ManifestLockFactoryTest {
               - lib2:
                   required: true
               exports:
-              - export1:
-                  type: activity
-              - export2:
-                  type: service
+                activity:
+                - export1
+                service:
+                - export2
             variants:
               debug:
                 namespace: org.test.app
               release:
                 namespace: org.test.app.release
-            fingerprint: 5e78b11162c281bd4743c57167e6cc43
-            
+            fingerprint: 8b4b97542b3e84216505ddb6161610d4
+
             """.trimIndent(),
             lock.content
         )
@@ -126,14 +126,14 @@ class ManifestLockFactoryTest {
             mapOf(
                 "debug" to main.copy(
                     minSDK = 10,
-                    features = main.features.orEmpty() + Entry("feature2", mapOf("required" to "false")) + Entry("debugFeature1"),
-                    exports = main.exports.orEmpty() + Entry("debugExport1", mapOf("type" to "activity")),
+                    features = main.features!! + Entry("feature2", mapOf("required" to "false")) + Entry("debugFeature1"),
+                    exports = mapOf("activity" to main.exports!!["activity"]!! + "debugExport1") + main.exports.filterKeys { it != "activity" },
                 ),
                 "release" to main.copy(
                     namespace = "org.test.app.release",
-                    permissions = main.permissions.orEmpty() + Entry("releasePermission1"),
-                    features = main.features.orEmpty() + Entry("releaseFeature1" , mapOf("required" to "true")),
-                    libraries = main.libraries.orEmpty() + Entry("releaseLib1"),
+                    permissions = main.permissions!! + Entry("releasePermission1"),
+                    features = main.features + Entry("releaseFeature1" , mapOf("required" to "true")),
+                    libraries = main.libraries!! + Entry("releaseLib1"),
                 ),
             )
         )
@@ -159,10 +159,10 @@ class ManifestLockFactoryTest {
               - lib2:
                   required: true
               exports:
-              - export1:
-                  type: activity
-              - export2:
-                  type: service
+                activity:
+                - export1
+                service:
+                - export2
             variants:
               debug:
                 namespace: org.test.app
@@ -172,8 +172,8 @@ class ManifestLockFactoryTest {
                     required: false
                 - debugFeature1
                 exports:
-                - debugExport1:
-                    type: activity
+                  activity:
+                  - debugExport1
               release:
                 namespace: org.test.app.release
                 minSDK: 14
@@ -184,8 +184,8 @@ class ManifestLockFactoryTest {
                     required: true
                 libraries:
                 - releaseLib1
-            fingerprint: 85d891ef3bc41dfba1d47e1953ec4ede
-            
+            fingerprint: 575faf711192e7fe52f7e0577e81e574
+
             """.trimIndent(),
             lock.content
         )

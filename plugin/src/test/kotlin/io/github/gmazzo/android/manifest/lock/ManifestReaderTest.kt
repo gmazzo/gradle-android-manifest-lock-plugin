@@ -65,12 +65,14 @@ class ManifestReaderTest {
         )
 
         assertEquals(
-            listOf(
-                Entry("androidx.work.impl.background.systemjob.SystemJobService", mapOf("type" to "service")),
-                Entry("androidx.work.impl.diagnostics.DiagnosticsReceiver", mapOf("type" to "receiver")),
-                Entry("com.testapp.onboarding.splash.SplashActivity", mapOf("type" to "activity")),
-                Entry("com.testapp.payments.core.processout.ProcessOutCallbackActivity", mapOf("type" to "activity")),
-             ), parsed.exports
+            mapOf(
+                "activity" to setOf(
+                    "com.testapp.onboarding.splash.SplashActivity",
+                    "com.testapp.payments.core.processout.ProcessOutCallbackActivity"
+                ),
+                "service" to setOf("androidx.work.impl.background.systemjob.SystemJobService"),
+                "receiver" to setOf("androidx.work.impl.diagnostics.DiagnosticsReceiver"),
+            ), parsed.exports
         )
     }
 
