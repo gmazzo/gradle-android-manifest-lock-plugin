@@ -30,34 +30,35 @@ internal object ManifestReader {
         val packageName = getPackageName.evaluate(source).takeUnless { it.isBlank() }
         val minSDK = getMinSDK.evaluate(source).toIntOrNull()
         val targetSDK = getTargetSDK.evaluate(source).toIntOrNull()
-        val permissions = getPermissions.collect(source)
-        val features = getFeatures.collect(source)
-        val libraries = getLibraries.collect(source)
-        val exports = getExports.collect(source) { node, attrs ->
-            attrs.keys.retainAll(setOf("name"))
-            attrs["type"] = node.nodeName
-        }
+        val permissions = getPermissions.collectEntries(source)
+        val features = getFeatures.collectEntries(source)
+        val libraries = getLibraries.collectEntries(source)
+        val exports = getExports.collect(source)
+            .groupingBy { it.nodeName }
+            .fold(emptySet<String>()) { acc, node -> acc + node.attributes.getNamedItemNS(ANDROID_NS, "name").nodeValue }
 
         return Manifest(packageName, minSDK, targetSDK, permissions, features, libraries, exports)
     }
 
-    private fun XPathExpression.collect(
-        source: Any,
-        adapter: ((Node, MutableMap<String, String>) -> Unit)? = null,
-    ): List<Manifest.Entry>? {
+    private fun XPathExpression.collect(source: Any): Sequence<Node> {
         val items = evaluate(source, XPathConstants.NODESET) as NodeList
-        return (0 until items.length).asSequence().map(items::item).map { node ->
+        return (0 until items.length).asSequence().map(items::item)
+    }
+
+    private fun XPathExpression.collectEntries(source: Any): List<Manifest.Entry>? = collect(source)
+        .map { node ->
             val attrs = (0 until node.attributes.length).asSequence()
                 .map(node.attributes::item)
                 .filter { it.namespaceURI == ANDROID_NS }
                 .map { it.localName to it.nodeValue }
                 .toMap(linkedMapOf())
-                .also { adapter?.invoke(node, it) }
             val name = attrs.remove("name")
 
             Manifest.Entry(name, attrs.takeUnless { it.isEmpty() })
-        }.toList().sortedBy { it.name }.takeUnless { it.isEmpty() }
-    }
+        }
+        .toList()
+        .sortedBy { it.name }
+        .takeUnless { it.isEmpty() }
 
     private object AndroidNamespaceContext : NamespaceContext {
 

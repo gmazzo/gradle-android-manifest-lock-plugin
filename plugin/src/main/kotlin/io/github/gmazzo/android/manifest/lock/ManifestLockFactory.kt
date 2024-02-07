@@ -27,25 +27,26 @@ internal object ManifestLockFactory {
     }
 
     private fun computeMain(manifests: Sequence<Manifest>): Manifest {
-        fun <T> sameOrNull(mapper: (Manifest) -> T?) = manifests
-            .map(mapper)
-            .reduce { acc, it -> if (acc == it) acc else null }
+        val namespace = manifests.mapNotNull(Manifest::namespace).sameOrNull()
+        val minSDK = manifests.mapNotNull(Manifest::minSDK).sameOrNull()
+        val targetSDK = manifests.mapNotNull(Manifest::targetSDK).sameOrNull()
+        val permissions = manifests.mapNotNull(Manifest::permissions).onlySame()
+        val features = manifests.mapNotNull(Manifest::features).onlySame()
+        val libraries = manifests.mapNotNull(Manifest::libraries).onlySame()
+        val exports = manifests.mapNotNull(Manifest::exports)
+            .reduce { acc, it -> acc.mapValues { (type, names) -> names.intersect(it[type].orEmpty()) } }
+            .withoutEmpties()
 
-        fun onlySame(mapper: (Manifest) -> List<Manifest.Entry>?) = manifests
-            .mapNotNull(mapper)
-            .map { it.toSet() }
-            .reduce { acc, it -> acc.intersect(it) }
-            .toList()
-
-        val namespace = sameOrNull(Manifest::namespace)
-        val minSDK = sameOrNull(Manifest::minSDK)
-        val targetSDK = sameOrNull(Manifest::targetSDK)
-        val permissions = onlySame(Manifest::permissions)
-        val features = onlySame(Manifest::features)
-        val libraries = onlySame(Manifest::libraries)
-        val exports = onlySame(Manifest::exports)
         return Manifest(namespace, minSDK, targetSDK, permissions, features, libraries, exports)
     }
+
+    private fun <Type> Sequence<Type?>.sameOrNull() = this
+        .reduce { acc, it -> if (acc == it) acc else null }
+
+    private fun <Type> Sequence<Iterable<Type>>.onlySame() = this
+        .map { it.toSet() }
+        .reduce { acc, it -> acc.intersect(it) }
+        .toList()
 
     private fun computeVariants(main: Manifest, manifests: Map<String, Manifest>) =
         manifests.entries.asSequence().mapNotNull { (variant, m) ->
@@ -56,7 +57,9 @@ internal object ManifestLockFactory {
                 permissions = m.permissions?.without(main.permissions),
                 features = m.features?.without(main.features),
                 libraries = m.libraries?.without(main.libraries),
-                exports = m.exports?.without(main.exports),
+                exports = m.exports.orEmpty()
+                    .mapValues { (type, names) -> names - main.exports?.get(type).orEmpty() }
+                    .withoutEmpties(),
             )) {
                 emptyManifest -> null
                 else -> variant to reduced
@@ -67,6 +70,10 @@ internal object ManifestLockFactory {
         null -> this
         else -> this - other.toSet()
     }.takeUnless { it.isEmpty() }
+
+    private fun Map<String, Set<String>>.withoutEmpties() = this
+        .filterValues { it.isNotEmpty() }
+        .takeUnless { it.isEmpty() }
 
     private fun computeFingerprint(main: Manifest, variants: Map<String, Manifest>): String {
         val content = with(ByteArrayOutputStream()) {
