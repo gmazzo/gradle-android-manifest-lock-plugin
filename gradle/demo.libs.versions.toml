@@ -1,0 +1,7 @@
+# the following libraries are not part of the main source code,
+# but used as an example of 3rd party manifest contributors for the `demo` project
+
+[libraries]
+androidx-workManager = { module = "androidx.work:work-runtime-ktx", version = "2.9.0" }
+google-services-maps = { module = "com.google.android.gms:play-services-maps", version = "18.2.0" }
+leakCanary = { module = "com.squareup.leakcanary:leakcanary-android", version = "2.14" }

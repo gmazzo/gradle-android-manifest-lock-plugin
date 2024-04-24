@@ -17,7 +17,7 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.workManager)
-    debugImplementation(libs.leakCanary)
-    releaseImplementation(libs.google.services.maps)
+    implementation(demoLibs.androidx.workManager)
+    debugImplementation(demoLibs.leakCanary)
+    releaseImplementation(demoLibs.google.services.maps)
 }
