@@ -34,19 +34,19 @@ internal object ManifestLockFactory {
         val features = manifests.mapNotNull(Manifest::features).onlySame()
         val libraries = manifests.mapNotNull(Manifest::libraries).onlySame()
         val exports = manifests.mapNotNull(Manifest::exports)
-            .reduce { acc, it -> acc.mapValues { (type, names) -> names.intersect(it[type].orEmpty()) } }
-            .withoutEmpties()
+            .reduceOrNull { acc, it -> acc.mapValues { (type, names) -> names.intersect(it[type].orEmpty()) } }
+            ?.withoutEmpties()
 
         return Manifest(namespace, minSDK, targetSDK, permissions, features, libraries, exports)
     }
 
     private fun <Type> Sequence<Type?>.sameOrNull() = this
-        .reduce { acc, it -> if (acc == it) acc else null }
+        .reduceOrNull { acc, it -> if (acc == it) acc else null }
 
     private fun <Type> Sequence<Iterable<Type>>.onlySame() = this
         .map { it.toSet() }
-        .reduce { acc, it -> acc.intersect(it) }
-        .toList()
+        .reduceOrNull { acc, it -> acc.intersect(it) }
+        ?.toList()
 
     private fun computeVariants(main: Manifest, manifests: Map<String, Manifest>) =
         manifests.entries.asSequence().mapNotNull { (variant, m) ->
