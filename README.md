@@ -73,7 +73,7 @@ android {
 ```kotlin
 android {
     manifestLock {
-        failOnLockChange = System.getenv("CI") != null
+        failOnLockChange = providers.environmentVariable("CI").map(String::toBoolean).orElse(false)
     }
 }
 ```

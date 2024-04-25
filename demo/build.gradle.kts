@@ -21,3 +21,9 @@ dependencies {
     debugImplementation(demoLibs.leakCanary)
     releaseImplementation(demoLibs.google.services.maps)
 }
+
+android {
+    manifestLock {
+        failOnLockChange = providers.environmentVariable("CI").map(String::toBoolean).orElse(false)
+    }
+}
