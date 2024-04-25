@@ -12,9 +12,8 @@ import javax.xml.xpath.XPathFactory
 internal object ManifestReader {
     private const val ANDROID_NS = "http://schemas.android.com/apk/res/android"
 
-    private val docBuilder = DocumentBuilderFactory.newInstance()
+    private val docBuilderFactory = DocumentBuilderFactory.newInstance()
         .apply { isNamespaceAware = true }
-        .newDocumentBuilder()
 
     private val xPath = XPathFactory.newInstance().newXPath().apply { namespaceContext = AndroidNamespaceContext }
     private val getPackageName = xPath.compile("/manifest/@package")
@@ -26,7 +25,7 @@ internal object ManifestReader {
     private val getExports = xPath.compile("//*[@android:exported='true']")
 
     fun parse(manifest: File): Manifest {
-        val source = docBuilder.parse(manifest)
+        val source = docBuilderFactory.newDocumentBuilder().parse(manifest)
         val packageName = getPackageName.evaluate(source).takeUnless { it.isBlank() }
         val minSDK = getMinSDK.evaluate(source).toIntOrNull()
         val targetSDK = getTargetSDK.evaluate(source).toIntOrNull()
