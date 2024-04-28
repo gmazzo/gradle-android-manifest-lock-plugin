@@ -9,6 +9,11 @@ java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 android {
     namespace = "io.github.gmazzo.android.manifest.lock.demo"
 
+    manifestLock.failOnLockChange = providers
+        .environmentVariable("CI")
+        .map(String::toBoolean)
+        .orElse(false)
+
     defaultConfig {
         compileSdk = 34
         minSdk = 24
