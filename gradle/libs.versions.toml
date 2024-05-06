@@ -1,6 +1,6 @@
 [versions]
 kotlin = "1.9.23"
-agp = "8.3.2"
+agp = "8.4.0"
 
 [libraries]
 kotlin-serialization-yaml = { module = "com.charleskorn.kaml:kaml", version = "0.59.0" }
