@@ -3,7 +3,7 @@ kotlin = "2.0.21"
 agp = "8.7.1"
 
 [libraries]
-kotlin-serialization-yaml = { module = "com.charleskorn.kaml:kaml", version = "0.61.0" }
+kotlin-serialization-yaml = { module = "com.charleskorn.kaml:kaml", version = "0.62.2" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
