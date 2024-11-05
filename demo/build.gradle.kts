@@ -26,6 +26,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.camera)
     implementation(libs.androidx.workManager)
     debugImplementation(libs.leakCanary)
     releaseImplementation(libs.google.services.maps)

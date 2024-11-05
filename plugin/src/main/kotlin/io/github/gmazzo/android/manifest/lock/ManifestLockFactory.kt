@@ -40,6 +40,7 @@ internal object ManifestLockFactory {
                 }
             }
             ?.withoutEmpties(),
+        nativeLibraries = manifests.mapNotNull(Manifest::nativeLibraries).onlySame(),
     )
 
     private fun <Type> Sequence<Type?>.sameOrNull() = this
@@ -62,13 +63,14 @@ internal object ManifestLockFactory {
                 exports = m.exports.orEmpty()
                     .mapValues { (type, names) -> names - main.exports?.get(type).orEmpty() }
                     .withoutEmpties(),
+                nativeLibraries = m.nativeLibraries?.without(main.nativeLibraries),
             )) {
                 emptyManifest -> null
                 else -> variant to reduced
             }
         }.toMap().takeUnless { it.isEmpty() }
 
-    private fun List<Manifest.Entry>.without(other: List<Manifest.Entry>?) = when (other) {
+    private fun <Type> List<Type>.without(other: List<Type>?) = when (other) {
         null -> this
         else -> this - other.toSet()
     }.takeUnless { it.isEmpty() }

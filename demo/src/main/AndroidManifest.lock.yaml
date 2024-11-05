@@ -14,6 +14,13 @@ main:
   libraries:
   - org.apache.http.legacy:
       required: false
+  nativeLibraries:
+  - androidx.camera:camera-core:
+      libimage_processing_util_jni:
+      - arm64-v8a
+      - armeabi-v7a
+      - x86
+      - x86_64
   exports:
     activity:
     - io.github.gmazzo.android.manifest.lock.demo.MainActivity
@@ -57,4 +64,4 @@ variants:
         - armeabi-v7a
         - x86
         - x86_64
-fingerprint: 70ec9fae5d7435eed5f8f32954de4798
+fingerprint: 7e6124de96d872c67dc09d85e314ac43
