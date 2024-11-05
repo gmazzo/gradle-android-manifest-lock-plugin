@@ -26,19 +26,21 @@ internal object ManifestLockFactory {
         return ManifestLock(main, variants, fingerprint)
     }
 
-    private fun computeMain(manifests: Sequence<Manifest>): Manifest {
-        val namespace = manifests.mapNotNull(Manifest::namespace).sameOrNull()
-        val minSDK = manifests.mapNotNull(Manifest::minSDK).sameOrNull()
-        val targetSDK = manifests.mapNotNull(Manifest::targetSDK).sameOrNull()
-        val permissions = manifests.mapNotNull(Manifest::permissions).onlySame()
-        val features = manifests.mapNotNull(Manifest::features).onlySame()
-        val libraries = manifests.mapNotNull(Manifest::libraries).onlySame()
-        val exports = manifests.mapNotNull(Manifest::exports)
-            .reduceOrNull { acc, it -> acc.mapValues { (type, names) -> names.intersect(it[type].orEmpty()) } }
-            ?.withoutEmpties()
-
-        return Manifest(namespace, minSDK, targetSDK, permissions, features, libraries, exports)
-    }
+    private fun computeMain(manifests: Sequence<Manifest>) = Manifest(
+        namespace = manifests.mapNotNull(Manifest::namespace).sameOrNull(),
+        minSDK = manifests.mapNotNull(Manifest::minSDK).sameOrNull(),
+        targetSDK = manifests.mapNotNull(Manifest::targetSDK).sameOrNull(),
+        permissions = manifests.mapNotNull(Manifest::permissions).onlySame(),
+        features = manifests.mapNotNull(Manifest::features).onlySame(),
+        libraries = manifests.mapNotNull(Manifest::libraries).onlySame(),
+        exports = manifests.mapNotNull(Manifest::exports)
+            .reduceOrNull { acc, it ->
+                acc.mapValues { (type, names) ->
+                    names.intersect(it[type].orEmpty())
+                }
+            }
+            ?.withoutEmpties(),
+    )
 
     private fun <Type> Sequence<Type?>.sameOrNull() = this
         .reduceOrNull { acc, it -> if (acc == it) acc else null }

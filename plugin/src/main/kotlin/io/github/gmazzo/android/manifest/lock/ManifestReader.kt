@@ -15,7 +15,8 @@ internal object ManifestReader {
     private val docBuilderFactory = DocumentBuilderFactory.newInstance()
         .apply { isNamespaceAware = true }
 
-    private val xPath = XPathFactory.newInstance().newXPath().apply { namespaceContext = AndroidNamespaceContext }
+    private val xPath =
+        XPathFactory.newInstance().newXPath().apply { namespaceContext = AndroidNamespaceContext }
     private val getPackageName = xPath.compile("/manifest/@package")
     private val getMinSDK = xPath.compile("/manifest/uses-sdk/@android:minSdkVersion")
     private val getTargetSDK = xPath.compile("/manifest/uses-sdk/@android:targetSdkVersion")
@@ -31,15 +32,15 @@ internal object ManifestReader {
         readFeatures: Boolean = true,
         readLibraries: Boolean = true,
         readExports: Boolean = true
-    ): Manifest {
-        val source = docBuilderFactory.newDocumentBuilder().parse(manifest)
-        val packageName = getPackageName.evaluate(source).takeUnless { it.isBlank() }
-        val minSDK = if (readSDKVersion) getMinSDK.evaluate(source).toIntOrNull() else null
-        val targetSDK = if (readSDKVersion) getTargetSDK.evaluate(source).toIntOrNull() else null
-        val permissions = if (readPermissions) getPermissions.collectEntries(source) else null
-        val features = if (readFeatures) getFeatures.collectEntries(source) else null
-        val libraries = if (readLibraries) getLibraries.collectEntries(source) else null
-        val exports =
+    ) = docBuilderFactory.newDocumentBuilder().parse(manifest).let { source ->
+        Manifest(
+            namespace = getPackageName.evaluate(source).takeUnless { it.isBlank() },
+            minSDK = if (readSDKVersion) getMinSDK.evaluate(source).toIntOrNull() else null,
+            targetSDK = if (readSDKVersion) getTargetSDK.evaluate(source).toIntOrNull() else null,
+            permissions = if (readPermissions) getPermissions.collectEntries(source) else null,
+            features = if (readFeatures) getFeatures.collectEntries(source) else null,
+            libraries = if (readLibraries) getLibraries.collectEntries(source) else null,
+            exports =
             if (readExports) getExports
                 .collect(source)
                 .groupingBy { it.nodeName }
@@ -47,8 +48,7 @@ internal object ManifestReader {
                     acc + node.attributes.getNamedItemNS(ANDROID_NS, "name").nodeValue
                 }
             else null
-
-        return Manifest(packageName, minSDK, targetSDK, permissions, features, libraries, exports)
+        )
     }
 
     private fun XPathExpression.collect(source: Any): Sequence<Node> {

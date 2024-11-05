@@ -10,6 +10,7 @@ internal data class Manifest(
     val permissions: List<Entry>? = null,
     val features: List<Entry>? = null,
     val libraries: List<Entry>? = null,
+    val nativeLibraries: List<Map<String, NativeLibrary>>? = null,
     val exports: Map<String, Set<String>>? = null,
 ) {
 

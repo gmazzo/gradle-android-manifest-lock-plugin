@@ -9,10 +9,14 @@ java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 android {
     namespace = "io.github.gmazzo.android.manifest.lock.demo"
 
-    manifestLock.failOnLockChange = providers
-        .environmentVariable("CI")
-        .map(String::toBoolean)
-        .orElse(false)
+    manifestLock {
+
+        failOnLockChange = providers
+            .environmentVariable("CI")
+            .map(String::toBoolean)
+            .orElse(false)
+
+    }
 
     defaultConfig {
         compileSdk = 34
@@ -22,9 +26,10 @@ android {
 }
 
 dependencies {
-    implementation(demoLibs.androidx.workManager)
-    debugImplementation(demoLibs.leakCanary)
-    releaseImplementation(demoLibs.google.services.maps)
+    implementation(libs.androidx.workManager)
+    debugImplementation(libs.leakCanary)
+    releaseImplementation(libs.google.services.maps)
+    releaseImplementation(libs.firebase.crashlytics.ndk)
 }
 
 android {
