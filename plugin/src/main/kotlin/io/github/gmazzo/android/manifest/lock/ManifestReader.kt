@@ -24,17 +24,29 @@ internal object ManifestReader {
     private val getLibraries = xPath.compile("/manifest/application/uses-library")
     private val getExports = xPath.compile("//*[@android:exported='true']")
 
-    fun parse(manifest: File): Manifest {
+    fun parse(
+        manifest: File,
+        readSDKVersion: Boolean = true,
+        readPermissions: Boolean = true,
+        readFeatures: Boolean = true,
+        readLibraries: Boolean = true,
+        readExports: Boolean = true
+    ): Manifest {
         val source = docBuilderFactory.newDocumentBuilder().parse(manifest)
         val packageName = getPackageName.evaluate(source).takeUnless { it.isBlank() }
-        val minSDK = getMinSDK.evaluate(source).toIntOrNull()
-        val targetSDK = getTargetSDK.evaluate(source).toIntOrNull()
-        val permissions = getPermissions.collectEntries(source)
-        val features = getFeatures.collectEntries(source)
-        val libraries = getLibraries.collectEntries(source)
-        val exports = getExports.collect(source)
-            .groupingBy { it.nodeName }
-            .fold(emptySet<String>()) { acc, node -> acc + node.attributes.getNamedItemNS(ANDROID_NS, "name").nodeValue }
+        val minSDK = if (readSDKVersion) getMinSDK.evaluate(source).toIntOrNull() else null
+        val targetSDK = if (readSDKVersion) getTargetSDK.evaluate(source).toIntOrNull() else null
+        val permissions = if (readPermissions) getPermissions.collectEntries(source) else null
+        val features = if (readFeatures) getFeatures.collectEntries(source) else null
+        val libraries = if (readLibraries) getLibraries.collectEntries(source) else null
+        val exports =
+            if (readExports) getExports
+                .collect(source)
+                .groupingBy { it.nodeName }
+                .fold(emptySet<String>()) { acc, node ->
+                    acc + node.attributes.getNamedItemNS(ANDROID_NS, "name").nodeValue
+                }
+            else null
 
         return Manifest(packageName, minSDK, targetSDK, permissions, features, libraries, exports)
     }

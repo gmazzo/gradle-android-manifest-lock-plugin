@@ -9,6 +9,7 @@ import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
+import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
@@ -26,6 +27,9 @@ abstract class AndroidManifestLockTask : DefaultTask() {
     internal val variantManifestsFiles =
         variantManifests.map { it.values }
 
+    @get:Nested
+    abstract val manifestContent: Property<AndroidManifestLockExtension.Content>
+
     @get:OutputFile
     abstract val lockFile: RegularFileProperty
 
@@ -36,8 +40,18 @@ abstract class AndroidManifestLockTask : DefaultTask() {
 
     @TaskAction
     fun generateLock() {
+        val contentSpec = manifestContent.get()
         val manifests = variantManifests.get()
-            .mapValues { (_, manifest) -> ManifestReader.parse(manifest.asFile) }
+            .mapValues { (_, manifest) ->
+                ManifestReader.parse(
+                    manifest = manifest.asFile,
+                    readSDKVersion = contentSpec.sdkVersion.get(),
+                    readPermissions = contentSpec.permissions.get(),
+                    readFeatures = contentSpec.features.get(),
+                    readLibraries = contentSpec.libraries.get(),
+                    readExports = contentSpec.exports.get(),
+                )
+            }
 
         val lock = ManifestLockFactory.create(manifests)
 

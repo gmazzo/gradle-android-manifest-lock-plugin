@@ -7,9 +7,11 @@ import java.io.File
 
 class ManifestReaderTest {
 
+    private val source = File(javaClass.getResource("/AndroidManifest.xml")!!.file)
+
+
     @Test
     fun `parses a manifest correctly`() {
-        val source = File(javaClass.getResource("/AndroidManifest.xml")!!.file)
         val parsed = ManifestReader.parse(source)
 
         assertEquals("io.github.gmazzo.android.manifest.lock.test", parsed.namespace)
@@ -74,6 +76,20 @@ class ManifestReaderTest {
                 "receiver" to setOf("androidx.work.impl.diagnostics.DiagnosticsReceiver"),
             ), parsed.exports
         )
+    }
+
+    @Test
+    fun `when disabled all features, parses a manifest correctly`() {
+        val parsed = ManifestReader.parse(
+            source,
+            readSDKVersion = false,
+            readPermissions = false,
+            readFeatures = false,
+            readLibraries = false,
+            readExports = false
+        )
+
+        assertEquals(Manifest(namespace = "io.github.gmazzo.android.manifest.lock.test"), parsed)
     }
 
 }
