@@ -69,6 +69,20 @@ android {
 }
 ```
 
+### Customizing the content of the lock file
+There are many configuration options to customize the content of the lock file, such as: `sdkVersion`, `permissions`, `features`, `libraries` and `exports`.
+
+For instance, to remove the `exports` section from the lock file, you can set the `exports` property to `false`:
+```kotlin
+android {
+    manifestLock {
+        content {
+            exports = false
+        }
+    }
+}
+```
+
 ### Failing if lock has changes on CI
 ```kotlin
 android {

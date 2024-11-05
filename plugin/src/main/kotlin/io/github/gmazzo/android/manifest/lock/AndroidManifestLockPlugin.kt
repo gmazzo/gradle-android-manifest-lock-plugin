@@ -34,6 +34,7 @@ class AndroidManifestLockPlugin : Plugin<Project> {
         val extension = project.createExtension(android, manifest)
         val lockTask = project.tasks.register<AndroidManifestLockTask>("androidManifestLock") {
             variantManifests.set(manifests)
+            manifestContent.set(extension.content)
             lockFile.set(extension.lockFile)
             failOnLockChange.set(extension.failOnLockChange)
         }
@@ -47,6 +48,30 @@ class AndroidManifestLockPlugin : Plugin<Project> {
         .extensions
         .create<AndroidManifestLockExtension>("manifestLock")
         .apply {
+
+            content {
+
+                sdkVersion
+                    .convention(true)
+                    .finalizeValueOnRead()
+
+                permissions
+                    .convention(true)
+                    .finalizeValueOnRead()
+
+                features
+                    .convention(true)
+                    .finalizeValueOnRead()
+
+                libraries
+                    .convention(true)
+                    .finalizeValueOnRead()
+
+                exports
+                    .convention(true)
+                    .finalizeValueOnRead()
+
+            }
 
             lockFile
                 .convention(manifest.map { file ->
