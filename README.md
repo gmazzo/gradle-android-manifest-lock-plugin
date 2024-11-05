@@ -54,7 +54,29 @@ variants:
   release:
     permissions:
       - android.permission.INTERNET
-fingerprint: 25d1dd4e3d17990162837964cdd8d992
+    nativeLibraries:
+      - com.google.firebase:firebase-crashlytics-ndk:
+          libcrashlytics:
+            - arm64-v8a
+            - armeabi-v7a
+            - x86
+            - x86_64
+          libcrashlytics-common:
+            - arm64-v8a
+            - armeabi-v7a
+            - x86
+            - x86_64
+          libcrashlytics-handler:
+            - arm64-v8a
+            - armeabi-v7a
+            - x86
+            - x86_64
+          libcrashlytics-trampoline:
+            - arm64-v8a
+            - armeabi-v7a
+            - x86
+            - x86_64
+fingerprint: 70ec9fae5d7435eed5f8f32954de4798
 ```
 You can later commit this file to keep track and detect unnoticed changes (by introducing/bumping a 3rd party dependency for instance).
 

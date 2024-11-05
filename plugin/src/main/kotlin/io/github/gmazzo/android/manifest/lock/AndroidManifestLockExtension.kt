@@ -46,6 +46,9 @@ interface AndroidManifestLockExtension {
         val libraries: Property<Boolean>
 
         @get:Input
+        val nativeLibraries: Property<Boolean>
+
+        @get:Input
         val exports: Property<Boolean>
 
     }
