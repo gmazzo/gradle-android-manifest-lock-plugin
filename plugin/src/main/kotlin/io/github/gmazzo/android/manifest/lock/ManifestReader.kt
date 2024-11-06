@@ -20,9 +20,11 @@ internal object ManifestReader {
     private val getPackageName = xPath.compile("/manifest/@package")
     private val getMinSDK = xPath.compile("/manifest/uses-sdk/@android:minSdkVersion")
     private val getTargetSDK = xPath.compile("/manifest/uses-sdk/@android:targetSdkVersion")
-    private val getPermissions = xPath.compile("/manifest/uses-permission")
+    private val getPermissions =
+        xPath.compile("/manifest/*[self::uses-permission or self::uses-permission-sdk-23]")
     private val getFeatures = xPath.compile("/manifest/uses-feature")
     private val getLibraries = xPath.compile("/manifest/application/uses-library")
+    private val getNativeLibraries = xPath.compile("/manifest/application/uses-native-library")
     private val getExports = xPath.compile("//*[@android:exported='true']")
 
     fun parse(
@@ -31,6 +33,7 @@ internal object ManifestReader {
         readPermissions: Boolean = true,
         readFeatures: Boolean = true,
         readLibraries: Boolean = true,
+        readNativeLibraries: Boolean = true,
         readExports: Boolean = true
     ) = docBuilderFactory.newDocumentBuilder().parse(manifest).let { source ->
         Manifest(
@@ -40,14 +43,14 @@ internal object ManifestReader {
             permissions = if (readPermissions) getPermissions.collectEntries(source) else null,
             features = if (readFeatures) getFeatures.collectEntries(source) else null,
             libraries = if (readLibraries) getLibraries.collectEntries(source) else null,
-            exports =
-            if (readExports) getExports
+            nativeLibraries = if (readNativeLibraries) getNativeLibraries
+                .collectEntries(source, linkedMapOf("requiredBy" to setOf("manifest"))) else null,
+            exports = if (readExports) getExports
                 .collect(source)
                 .groupingBy { it.nodeName }
                 .fold(emptySet<String>()) { acc, node ->
                     acc + node.attributes.getNamedItemNS(ANDROID_NS, "name").nodeValue
-                }
-            else null
+                } else null
         )
     }
 
@@ -56,14 +59,17 @@ internal object ManifestReader {
         return (0 until items.length).asSequence().map(items::item)
     }
 
-    private fun XPathExpression.collectEntries(source: Any): List<Manifest.Entry>? = collect(source)
+    private fun XPathExpression.collectEntries(
+        source: Any,
+        extraAttrs: MutableMap<String, Set<String>>? = null,
+    ): List<Manifest.Entry>? = collect(source)
         .map { node ->
+            val name = node.attributes.getNamedItemNS(ANDROID_NS, "name")?.nodeValue
             val attrs = (0 until node.attributes.length).asSequence()
                 .map(node.attributes::item)
-                .filter { it.namespaceURI == ANDROID_NS }
-                .map { it.localName to it.nodeValue }
-                .toMap(linkedMapOf())
-            val name = attrs.remove("name")
+                .filter { it.namespaceURI == ANDROID_NS && it.localName != "name" }
+                .map { it.localName to setOf(it.nodeValue) }
+                .toMap(extraAttrs ?: linkedMapOf())
 
             Manifest.Entry(name, attrs.takeUnless { it.isEmpty() })
         }

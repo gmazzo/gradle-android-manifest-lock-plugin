@@ -12,17 +12,17 @@ class ManifestLockFactoryTest {
         targetSDK = 34,
         permissions = listOf(
             Entry("permission1"),
-            Entry("permission2", mapOf("required" to "true")),
-            Entry("permission2", mapOf("required" to "true", "until" to "30")),
+            Entry("permission2", mapOf("required" to setOf("true"))),
+            Entry("permission2", mapOf("required" to setOf("true"), "until" to setOf("30"))),
         ),
         features = listOf(
             Entry("feature1"),
-            Entry("feature2", mapOf("required" to "true")),
-            Entry(attributes = mapOf("custom" to "1")),
+            Entry("feature2", mapOf("required" to setOf("true"))),
+            Entry(attributes = mapOf("custom" to setOf("1"))),
         ),
         libraries = listOf(
             Entry("lib1"),
-            Entry("lib2", mapOf("required" to "true")),
+            Entry("lib2", mapOf("required" to setOf("true"))),
         ),
         exports = mapOf(
             "activity" to setOf("export1"),
@@ -126,13 +126,13 @@ class ManifestLockFactoryTest {
             mapOf(
                 "debug" to main.copy(
                     minSDK = 10,
-                    features = main.features!! + Entry("feature2", mapOf("required" to "false")) + Entry("debugFeature1"),
+                    features = main.features!! + Entry("feature2", mapOf("required" to setOf("false"))) + Entry("debugFeature1"),
                     exports = mapOf("activity" to main.exports!!["activity"]!! + "debugExport1") + main.exports.filterKeys { it != "activity" },
                 ),
                 "release" to main.copy(
                     namespace = "org.test.app.release",
                     permissions = main.permissions!! + Entry("releasePermission1"),
-                    features = main.features + Entry("releaseFeature1" , mapOf("required" to "true")),
+                    features = main.features + Entry("releaseFeature1" , mapOf("required" to setOf("true"))),
                     libraries = main.libraries!! + Entry("releaseLib1"),
                 ),
             )

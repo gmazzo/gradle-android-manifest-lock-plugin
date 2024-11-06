@@ -69,18 +69,19 @@ abstract class AndroidManifestLockTask : DefaultTask() {
         val nativeLibraries by lazy { computeNativeLibraries() }
         val manifests = variantManifests.get()
             .mapValues { (variant, manifest) ->
-                ManifestReader.parse(
+                val manifest = ManifestReader.parse(
                     manifest = manifest.asFile,
                     readSDKVersion = contentSpec.sdkVersion.get(),
                     readPermissions = contentSpec.permissions.get(),
                     readFeatures = contentSpec.features.get(),
                     readLibraries = contentSpec.libraries.get(),
+                    readNativeLibraries = contentSpec.nativeLibraries.get(),
                     readExports = contentSpec.exports.get(),
-                ).copy(
-                    nativeLibraries =
-                    if (contentSpec.nativeLibraries.get()) nativeLibraries[variant]
-                    else null,
                 )
+
+                nativeLibraries[variant]
+                    ?.let { manifest.copy(nativeLibraries = manifest.nativeLibraries.orEmpty() + it) }
+                    ?: manifest
             }
 
         val lock = ManifestLockFactory.create(manifests)
@@ -96,21 +97,31 @@ abstract class AndroidManifestLockTask : DefaultTask() {
         }
     }
 
-    private fun computeNativeLibraries(): Map<String, List<Map<String, NativeLibrary>>?> =
+    private fun computeNativeLibraries(): Map<String, List<Manifest.Entry>?> =
         variantRuntimeClasspath.get().mapValues { (_, artifacts) ->
-            artifacts.artifacts.mapNotNull {
-                val libraries: NativeLibrary = it.file.inputStream().use(yaml::decodeFromStream)
+            artifacts.artifacts.flatMap { artifact ->
+                val library: NativeLibrary? =
+                    artifact.file.inputStream().use(yaml::decodeFromStream)
 
-                if (libraries.isNotEmpty())
-                    mapOf(it.id.dependencyName to libraries)
-                else null
+                when (library) {
+                    null -> emptyList()
+                    else -> library.map { (name, abis) ->
+                        Manifest.Entry(
+                            name, mapOf(
+                                "requiredBy" to setOf(artifact.id.dependencyName),
+                                "abis" to abis,
+                            )
+                        )
+                    }
+                }
             }.takeIf { it.isNotEmpty() }
         }
 
-    private val ComponentArtifactIdentifier.dependencyName get() = when(val id = componentIdentifier) {
-        is ModuleComponentIdentifier -> "${id.group}:${id.module}"
-        is ProjectComponentIdentifier -> id.projectPath
-        else -> id.displayName
-    }
+    private val ComponentArtifactIdentifier.dependencyName
+        get() = when (val id = componentIdentifier) {
+            is ModuleComponentIdentifier -> "${id.group}:${id.module}"
+            is ProjectComponentIdentifier -> id.projectPath
+            else -> id.displayName
+        }
 
 }
