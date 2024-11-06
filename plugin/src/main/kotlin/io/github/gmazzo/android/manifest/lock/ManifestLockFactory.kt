@@ -30,6 +30,7 @@ internal object ManifestLockFactory {
         namespace = manifests.mapNotNull(Manifest::namespace).sameOrNull(),
         minSDK = manifests.mapNotNull(Manifest::minSDK).sameOrNull(),
         targetSDK = manifests.mapNotNull(Manifest::targetSDK).sameOrNull(),
+        configurations = manifests.mapNotNull(Manifest::configurations).onlySame(),
         permissions = manifests.mapNotNull(Manifest::permissions).onlySame(),
         features = manifests.mapNotNull(Manifest::features).onlySame(),
         libraries = manifests.mapNotNull(Manifest::libraries).onlySame(),
@@ -50,6 +51,7 @@ internal object ManifestLockFactory {
         .map { it.toSet() }
         .reduceOrNull { acc, it -> acc.intersect(it) }
         ?.toList()
+        ?.takeUnless { it.isEmpty() }
 
     private fun computeVariants(main: Manifest, manifests: Map<String, Manifest>) =
         manifests.entries.asSequence().mapNotNull { (variant, m) ->
@@ -57,6 +59,7 @@ internal object ManifestLockFactory {
                 namespace = m.namespace.takeIf { it != main.namespace },
                 minSDK = m.minSDK.takeIf { it != main.minSDK },
                 targetSDK = m.targetSDK.takeIf { it != main.targetSDK },
+                configurations = m.configurations?.without(main.configurations),
                 permissions = m.permissions?.without(main.permissions),
                 features = m.features?.without(main.features),
                 libraries = m.libraries?.without(main.libraries),

@@ -20,6 +20,12 @@ class ManifestReaderTest {
 
         assertEquals(
             listOf(
+                Entry(attributes = mapOf("reqNavigation" to setOf("trackball"))),
+            ), parsed.configurations
+        )
+
+        assertEquals(
+            listOf(
                 Entry("android.permission.ACCESS_COARSE_LOCATION"),
                 Entry("android.permission.ACCESS_FINE_LOCATION"),
                 Entry("android.permission.ACCESS_NETWORK_STATE"),
@@ -90,6 +96,7 @@ class ManifestReaderTest {
         val parsed = ManifestReader.parse(
             source,
             readSDKVersion = false,
+            readConfigurations = false,
             readPermissions = false,
             readFeatures = false,
             readLibraries = false,

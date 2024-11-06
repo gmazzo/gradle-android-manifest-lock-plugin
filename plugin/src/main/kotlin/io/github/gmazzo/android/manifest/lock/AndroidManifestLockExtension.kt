@@ -37,6 +37,9 @@ interface AndroidManifestLockExtension {
         val sdkVersion: Property<Boolean>
 
         @get:Input
+        val configurations: Property<Boolean>
+
+        @get:Input
         val permissions: Property<Boolean>
 
         @get:Input
