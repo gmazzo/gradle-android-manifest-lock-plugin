@@ -77,6 +77,10 @@ class AndroidManifestLockPlugin : Plugin<Project> {
                         .convention(true)
                         .finalizeValueOnRead()
 
+                    configurations
+                        .convention(true)
+                        .finalizeValueOnRead()
+
                     permissions
                         .convention(true)
                         .finalizeValueOnRead()

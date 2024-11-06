@@ -53,6 +53,9 @@ main:
       - androidx.work.impl.diagnostics.DiagnosticsReceiver
 variants:
   debug:
+    configurations:
+      - reqFiveWayNav: true
+        reqNavigation: trackball
     permissions:
       - android.permission.POST_NOTIFICATIONS
       - android.permission.READ_EXTERNAL_STORAGE
@@ -63,6 +66,9 @@ variants:
       activity-alias:
         - leakcanary.internal.activity.LeakLauncherActivity
   release:
+    configurations:
+      - reqFiveWayNav: true
+        reqKeyboardType: qwerty
     permissions:
       - android.permission.INTERNET
     nativeLibraries:
@@ -94,7 +100,7 @@ variants:
             - armeabi-v7a
             - x86
             - x86_64
-fingerprint: 1cce1704de2fa5e3ccf22594be570d29
+fingerprint: 3ea645556e4cce4a3eebbb7543291eec
 ```
 You can later commit this file to keep track and detect unnoticed changes (by introducing/bumping a 3rd party dependency for instance).
 

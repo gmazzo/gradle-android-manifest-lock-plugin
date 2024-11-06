@@ -7,6 +7,7 @@ internal data class Manifest(
     val namespace: String? = null,
     val minSDK: Int? = null,
     val targetSDK: Int? = null,
+    val configurations: List<Entry>? = null,
     val permissions: List<Entry>? = null,
     val features: List<Entry>? = null,
     val libraries: List<Entry>? = null,

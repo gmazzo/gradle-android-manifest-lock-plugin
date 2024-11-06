@@ -20,6 +20,7 @@ internal object ManifestReader {
     private val getPackageName = xPath.compile("/manifest/@package")
     private val getMinSDK = xPath.compile("/manifest/uses-sdk/@android:minSdkVersion")
     private val getTargetSDK = xPath.compile("/manifest/uses-sdk/@android:targetSdkVersion")
+    private val getConfigurations = xPath.compile("/manifest/uses-configuration")
     private val getPermissions =
         xPath.compile("/manifest/*[self::uses-permission or self::uses-permission-sdk-23]")
     private val getFeatures = xPath.compile("/manifest/uses-feature")
@@ -30,6 +31,7 @@ internal object ManifestReader {
     fun parse(
         manifest: File,
         readSDKVersion: Boolean = true,
+        readConfigurations: Boolean = true,
         readPermissions: Boolean = true,
         readFeatures: Boolean = true,
         readLibraries: Boolean = true,
@@ -40,6 +42,7 @@ internal object ManifestReader {
             namespace = getPackageName.evaluate(source).takeUnless { it.isBlank() },
             minSDK = if (readSDKVersion) getMinSDK.evaluate(source).toIntOrNull() else null,
             targetSDK = if (readSDKVersion) getTargetSDK.evaluate(source).toIntOrNull() else null,
+            configurations = if (readConfigurations) getConfigurations.collectEntries(source) else null,
             permissions = if (readPermissions) getPermissions.collectEntries(source) else null,
             features = if (readFeatures) getFeatures.collectEntries(source) else null,
             libraries = if (readLibraries) getLibraries.collectEntries(source) else null,

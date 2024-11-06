@@ -72,6 +72,7 @@ abstract class AndroidManifestLockTask : DefaultTask() {
                 val manifest = ManifestReader.parse(
                     manifest = manifest.asFile,
                     readSDKVersion = contentSpec.sdkVersion.get(),
+                    readConfigurations = contentSpec.configurations.get(),
                     readPermissions = contentSpec.permissions.get(),
                     readFeatures = contentSpec.features.get(),
                     readLibraries = contentSpec.libraries.get(),
