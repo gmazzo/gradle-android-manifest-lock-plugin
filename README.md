@@ -33,6 +33,17 @@ main:
   libraries:
     - org.apache.http.legacy:
         required: false
+  nativeLibraries:
+    - libnative-lib.so:
+        requiredBy: manifest
+        required: false
+    - libimage_processing_util_jni:
+        requiredBy: androidx.camera:camera-core
+        abis:
+          - arm64-v8a
+          - armeabi-v7a
+          - x86
+          - x86_64
   exports:
     activity:
       - io.github.gmazzo.android.manifest.lock.demo.MainActivity
@@ -55,28 +66,35 @@ variants:
     permissions:
       - android.permission.INTERNET
     nativeLibraries:
-      - com.google.firebase:firebase-crashlytics-ndk:
-          libcrashlytics:
+      - libcrashlytics:
+          requiredBy: com.google.firebase:firebase-crashlytics-ndk
+          abis:
             - arm64-v8a
             - armeabi-v7a
             - x86
             - x86_64
-          libcrashlytics-common:
+      - libcrashlytics-common:
+          requiredBy: com.google.firebase:firebase-crashlytics-ndk
+          abis:
             - arm64-v8a
             - armeabi-v7a
             - x86
             - x86_64
-          libcrashlytics-handler:
+      - libcrashlytics-handler:
+          requiredBy: com.google.firebase:firebase-crashlytics-ndk
+          abis:
             - arm64-v8a
             - armeabi-v7a
             - x86
             - x86_64
-          libcrashlytics-trampoline:
+      - libcrashlytics-trampoline:
+          requiredBy: com.google.firebase:firebase-crashlytics-ndk
+          abis:
             - arm64-v8a
             - armeabi-v7a
             - x86
             - x86_64
-fingerprint: 70ec9fae5d7435eed5f8f32954de4798
+fingerprint: 1cce1704de2fa5e3ccf22594be570d29
 ```
 You can later commit this file to keep track and detect unnoticed changes (by introducing/bumping a 3rd party dependency for instance).
 

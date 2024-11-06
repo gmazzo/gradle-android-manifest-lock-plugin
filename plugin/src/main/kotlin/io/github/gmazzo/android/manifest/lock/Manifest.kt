@@ -10,11 +10,11 @@ internal data class Manifest(
     val permissions: List<Entry>? = null,
     val features: List<Entry>? = null,
     val libraries: List<Entry>? = null,
-    val nativeLibraries: List<Map<String, NativeLibrary>>? = null,
+    val nativeLibraries: List<Entry>? = null,
     val exports: Map<String, Set<String>>? = null,
 ) {
 
     @Serializable(with = ManifestEntrySerializer::class)
-    data class Entry(val name: String? = null, val attributes: Map<String, String>? = null)
+    data class Entry(val name: String? = null, val attributes: Map<String, Collection<String>>? = null)
 
 }

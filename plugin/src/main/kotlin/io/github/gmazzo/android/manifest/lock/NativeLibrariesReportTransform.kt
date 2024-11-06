@@ -37,8 +37,8 @@ abstract class NativeLibrariesReportTransform : TransformAction<TransformParamet
             }
         }
 
-        outputs.file("${file.name}.jni.yaml").outputStream().use {
-            yaml.encodeToStream<NativeLibrary>(libraries, it)
+        outputs.file("${file.name}.jni.yaml").outputStream().use { out ->
+            yaml.encodeToStream<NativeLibrary?>(libraries.takeUnless { it.isEmpty() }, out)
         }
     }
 

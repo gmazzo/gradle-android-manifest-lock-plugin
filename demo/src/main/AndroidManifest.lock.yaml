@@ -15,8 +15,12 @@ main:
   - org.apache.http.legacy:
       required: false
   nativeLibraries:
-  - androidx.camera:camera-core:
-      libimage_processing_util_jni:
+  - libnative-lib.so:
+      requiredBy: manifest
+      required: false
+  - libimage_processing_util_jni:
+      requiredBy: androidx.camera:camera-core
+      abis:
       - arm64-v8a
       - armeabi-v7a
       - x86
@@ -43,25 +47,32 @@ variants:
     permissions:
     - android.permission.INTERNET
     nativeLibraries:
-    - com.google.firebase:firebase-crashlytics-ndk:
-        libcrashlytics:
+    - libcrashlytics:
+        requiredBy: com.google.firebase:firebase-crashlytics-ndk
+        abis:
         - arm64-v8a
         - armeabi-v7a
         - x86
         - x86_64
-        libcrashlytics-common:
+    - libcrashlytics-common:
+        requiredBy: com.google.firebase:firebase-crashlytics-ndk
+        abis:
         - arm64-v8a
         - armeabi-v7a
         - x86
         - x86_64
-        libcrashlytics-handler:
+    - libcrashlytics-handler:
+        requiredBy: com.google.firebase:firebase-crashlytics-ndk
+        abis:
         - arm64-v8a
         - armeabi-v7a
         - x86
         - x86_64
-        libcrashlytics-trampoline:
+    - libcrashlytics-trampoline:
+        requiredBy: com.google.firebase:firebase-crashlytics-ndk
+        abis:
         - arm64-v8a
         - armeabi-v7a
         - x86
         - x86_64
-fingerprint: 7e6124de96d872c67dc09d85e314ac43
+fingerprint: 1cce1704de2fa5e3ccf22594be570d29
