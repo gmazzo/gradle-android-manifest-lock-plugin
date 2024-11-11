@@ -9,7 +9,7 @@ kotlin-serialization-yaml = { module = "com.charleskorn.kaml:kaml", version = "0
 androidx-camera = { module = "androidx.camera:camera-core", version = "1.4.0" }
 androidx-workManager = { module = "androidx.work:work-runtime-ktx", version = "2.9.0" }
 firebase-crashlytics-ndk = { module = "com.google.firebase:firebase-crashlytics-ndk", version = "19.2.1" }
-google-services-maps = { module = "com.google.android.gms:play-services-maps", version = "18.2.0" }
+google-services-maps = { module = "com.google.android.gms:play-services-maps", version = "19.0.0" }
 leakCanary = { module = "com.squareup.leakcanary:leakcanary-android", version = "2.14" }
 
 [plugins]
