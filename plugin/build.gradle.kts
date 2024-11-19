@@ -43,6 +43,7 @@ dependencies {
     compileOnly(gradleKotlinDsl())
     compileOnly(plugin(libs.plugins.android.library))
 
+    implementation(libs.diffUtils)
     implementation(libs.kotlin.serialization.yaml)
 
     testImplementation(gradleKotlinDsl())

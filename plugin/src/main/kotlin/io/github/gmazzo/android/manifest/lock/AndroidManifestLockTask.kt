@@ -1,6 +1,8 @@
 package io.github.gmazzo.android.manifest.lock
 
 import com.charleskorn.kaml.decodeFromStream
+import com.github.difflib.DiffUtils
+import com.github.difflib.UnifiedDiffUtils
 import io.github.gmazzo.android.manifest.lock.ManifestLockFactory.yaml
 import org.gradle.api.DefaultTask
 import org.gradle.api.artifacts.ArtifactCollection
@@ -22,6 +24,7 @@ import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.options.Option
 
 @CacheableTask
 abstract class AndroidManifestLockTask : DefaultTask() {
@@ -59,6 +62,10 @@ abstract class AndroidManifestLockTask : DefaultTask() {
     abstract val lockFile: RegularFileProperty
 
     @get:Input
+    @get:Option(
+        option = "fail-on-lock-change",
+        description = "Fail the build if the lock file has changed"
+    )
     abstract val failOnLockChange: Property<Boolean>
 
     private val rootDir = project.rootDir
@@ -92,8 +99,21 @@ abstract class AndroidManifestLockTask : DefaultTask() {
         if (content != lock.content) {
             file.writeText(lock.content)
 
-            val message =
-                "${file.toRelativeString(rootDir)} has changed, please commit the updated lock file"
+            val path = file.toRelativeString(rootDir)
+
+            val originalLines = content.orEmpty().lines()
+            val actualLines = lock.content.lines()
+            val diff = UnifiedDiffUtils.generateUnifiedDiff(
+                "before", "after",
+                content.orEmpty().lines(),
+                DiffUtils.diff(originalLines, actualLines),
+                3
+            )
+            val message = diff.joinToString(
+                prefix = "$path has changed, please commit the updated lock file:\n",
+                separator = "\n"
+            ) { it.toString() }
+
             if (failOnLockChange.get()) error(message) else logger.warn(message)
         }
     }

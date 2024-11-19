@@ -130,6 +130,9 @@ android {
 ```
 
 ### Failing if lock has changes on CI
+You can run `./gradlew androidManifestLock --fail-on-lock-change` to make the build fail if the lock file has changed.
+
+To make this behavior default on CI, you can use the following configuration:
 ```kotlin
 android {
     manifestLock {
