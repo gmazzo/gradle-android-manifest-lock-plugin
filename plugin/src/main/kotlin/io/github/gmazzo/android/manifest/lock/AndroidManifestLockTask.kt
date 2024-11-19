@@ -80,9 +80,12 @@ abstract class AndroidManifestLockTask : DefaultTask() {
                     readExports = contentSpec.exports.get(),
                 )
 
-                nativeLibraries[variant]
-                    ?.let { manifest.copy(nativeLibraries = manifest.nativeLibraries.orEmpty() + it) }
-                    ?: manifest
+                when (val nativeLibs = nativeLibraries[variant]) {
+                    null, emptyList<Manifest.Entry>() -> manifest
+                    else -> manifest.copy(
+                        nativeLibraries = (manifest.nativeLibraries.orEmpty() + nativeLibs).sortedBy { it.name },
+                    )
+                }
             }
 
         val lock = ManifestLockFactory.create(manifests)
