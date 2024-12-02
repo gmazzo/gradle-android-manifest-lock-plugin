@@ -1,6 +1,6 @@
 [versions]
 kotlin = "2.0.21"
-agp = "8.7.2"
+agp = "8.7.3"
 
 [libraries]
 diffUtils = { module = "io.github.java-diff-utils:java-diff-utils", version = "4.15" }
