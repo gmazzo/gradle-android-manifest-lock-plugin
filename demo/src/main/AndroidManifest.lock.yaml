@@ -15,9 +15,6 @@ main:
   - org.apache.http.legacy:
       required: false
   nativeLibraries:
-  - libnative-lib.so:
-      requiredBy: manifest
-      required: false
   - libimage_processing_util_jni:
       requiredBy: androidx.camera:camera-core
       abis:
@@ -25,6 +22,9 @@ main:
       - armeabi-v7a
       - x86
       - x86_64
+  - libnative-lib.so:
+      requiredBy: manifest
+      required: false
   exports:
     activity:
     - io.github.gmazzo.android.manifest.lock.demo.MainActivity
@@ -82,4 +82,4 @@ variants:
         - armeabi-v7a
         - x86
         - x86_64
-fingerprint: 2ce0dc0060eb278609a47be5abfaaff6
+fingerprint: cd890a78b0f882651c0bdecdc3da7405
