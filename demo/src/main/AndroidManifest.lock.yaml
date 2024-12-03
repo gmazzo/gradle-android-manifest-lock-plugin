@@ -1,7 +1,7 @@
 main:
   namespace: io.github.gmazzo.android.manifest.lock.demo
   minSDK: 24
-  targetSDK: 34
+  targetSDK: 35
   permissions:
   - android.permission.ACCESS_NETWORK_STATE
   - android.permission.FOREGROUND_SERVICE
@@ -32,6 +32,7 @@ main:
     - androidx.work.impl.background.systemjob.SystemJobService
     receiver:
     - androidx.work.impl.diagnostics.DiagnosticsReceiver
+    - androidx.profileinstaller.ProfileInstallReceiver
 variants:
   debug:
     configurations:
@@ -81,4 +82,4 @@ variants:
         - armeabi-v7a
         - x86
         - x86_64
-fingerprint: 637a70eae726890aa261c30636018ca1
+fingerprint: cd890a78b0f882651c0bdecdc3da7405
