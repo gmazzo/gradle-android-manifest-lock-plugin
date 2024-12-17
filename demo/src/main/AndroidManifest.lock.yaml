@@ -25,6 +25,13 @@ main:
   - libnative-lib.so:
       requiredBy: manifest
       required: false
+  - libsurface_util_jni:
+      requiredBy: androidx.camera:camera-core
+      abis:
+      - arm64-v8a
+      - armeabi-v7a
+      - x86
+      - x86_64
   exports:
     activity:
     - io.github.gmazzo.android.manifest.lock.demo.MainActivity
@@ -82,4 +89,4 @@ variants:
         - armeabi-v7a
         - x86
         - x86_64
-fingerprint: cd890a78b0f882651c0bdecdc3da7405
+fingerprint: fd65af36c15f3358f93d1f60da5d15d5
