@@ -51,6 +51,7 @@ dependencies {
 }
 
 tasks.test {
+    environment("TEMP_DIR", temporaryDir)
     javaLauncher = javaToolchains.launcherFor { languageVersion = JavaLanguageVersion.of(17) }
     finalizedBy(tasks.jacocoTestReport)
 }
