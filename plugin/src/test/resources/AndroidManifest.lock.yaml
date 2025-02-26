@@ -1,0 +1,75 @@
+main:
+  namespace: io.github.gmazzo.android.manifest.lock.test
+  minSDK: 24
+  targetSDK: 34
+  configurations:
+  - reqNavigation: trackball
+  permissions:
+  - android.permission.ACCESS_COARSE_LOCATION
+  - android.permission.ACCESS_FINE_LOCATION
+  - android.permission.ACCESS_NETWORK_STATE
+  - android.permission.ACCESS_WIFI_STATE
+  - android.permission.CALL_PHONE:
+      required: false
+  - android.permission.CAMERA:
+      required: false
+  - android.permission.DETECT_SCREEN_CAPTURE
+  - android.permission.FOREGROUND_SERVICE
+  - android.permission.FOREGROUND_SERVICE_CAMERA
+  - android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION
+  - android.permission.INTERNET
+  - android.permission.MODIFY_AUDIO_SETTINGS
+  - android.permission.POST_NOTIFICATIONS
+  - android.permission.READ_CONTACTS
+  - android.permission.READ_EXTERNAL_STORAGE:
+      maxSdkVersion: 32
+  - android.permission.READ_MEDIA_IMAGES
+  - android.permission.READ_MEDIA_VIDEO
+  - android.permission.RECEIVE_BOOT_COMPLETED
+  - android.permission.RECORD_AUDIO
+  - android.permission.REORDER_TASKS
+  - android.permission.VIBRATE
+  - android.permission.WAKE_LOCK
+  - android.permission.WRITE_EXTERNAL_STORAGE:
+      maxSdkVersion: 28
+  - com.google.android.c2dm.permission.RECEIVE
+  - com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE
+  - com.google.android.providers.gsf.permission.READ_GSERVICES
+  features:
+  - glEsVersion: 0x00020000
+    required: true
+  - android.hardware.camera:
+      required: false
+  - android.hardware.camera.autofocus:
+      required: false
+  - android.hardware.telephony:
+      required: false
+  libraries:
+  - android.ext.adservices:
+      required: false
+  - androidx.window.extensions:
+      required: false
+  - androidx.window.sidecar:
+      required: false
+  - org.apache.http.legacy:
+      required: false
+  nativeLibraries:
+  - libnative-lib.so:
+      requiredBy: manifest
+  exports:
+    activity:
+    - com.testapp.onboarding.splash.SplashActivity
+    - com.testapp.payments.core.processout.ProcessOutCallbackActivity
+    service:
+    - androidx.work.impl.background.systemjob.SystemJobService
+    receiver:
+    - androidx.work.impl.diagnostics.DiagnosticsReceiver
+variants:
+  debug:
+    nativeLibraries:
+    - lib1:
+        requiredBy: AndroidManifest.dependecy.jni.yaml
+        abis:
+        - abi1
+        - abi2
+fingerprint: eb482c96ab82e36f75839040b64d732f
