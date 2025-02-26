@@ -5,7 +5,6 @@ import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.newInstance
 import org.gradle.kotlin.dsl.register
-import org.gradle.kotlin.dsl.repositories
 import org.gradle.testfixtures.ProjectBuilder
 import java.io.File
 import kotlin.test.Test
@@ -13,22 +12,30 @@ import kotlin.test.assertEquals
 
 class AndroidManifestLockTaskTest {
 
-    private val tempDir = File(System.getenv("TEMP_DIR")!!).apply { deleteRecursively(); mkdirs() }
+    private val tempDir = File(System.getenv("TEMP_DIR")!!, "taskTest").apply {
+        deleteRecursively()
+        mkdirs()
+    }
 
     private val manifestFile = tempDir.resolve("AndroidManifest.xml").also {
         it.outputStream().use(javaClass.getResource("/AndroidManifest.xml")!!.openStream()::copyTo)
     }
 
-    private val manifestDependencyFile = tempDir.resolve("AndroidManifest.dependecy.jni.yaml").also {
-        it.outputStream().use(javaClass.getResource("/AndroidManifest.dependecy.jni.yaml")!!.openStream()::copyTo)
-    }
+    private val manifestDependencyFile =
+        tempDir.resolve("AndroidManifest.dependecy.jni.yaml").also {
+            it.outputStream().use(
+                javaClass.getResource("/AndroidManifest.dependecy.jni.yaml")!!.openStream()::copyTo
+            )
+        }
 
     private val manifestLockFile = tempDir.resolve("AndroidManifest.lock.yaml")
 
-    private val task = with(ProjectBuilder.builder()
-        .withProjectDir(tempDir)
-        .withGradleUserHomeDir(tempDir.resolve(".home"))
-        .build()) {
+    private val task = with(
+        ProjectBuilder.builder()
+            .withProjectDir(tempDir)
+            .withGradleUserHomeDir(tempDir.resolve(".home"))
+            .build()
+    ) {
 
         val debugDependencies by configurations.creating
 
