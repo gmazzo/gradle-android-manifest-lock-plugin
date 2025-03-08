@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.gradle.pluginPublish)
     alias(libs.plugins.publicationsReport)
+    signing
     jacoco
 }
 
@@ -14,6 +15,8 @@ version = providers
     .standardOutput.asText.get().trim().removePrefix("v")
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(11))
+kotlin.compilerOptions.freeCompilerArgs.add("-Xjvm-default=all")
+samWithReceiver.annotation(HasImplicitReceiver::class.qualifiedName!!)
 
 gradlePlugin {
     website.set("https://github.com/gmazzo/gradle-android-manifest-lock-plugin")
@@ -28,9 +31,14 @@ gradlePlugin {
     }
 }
 
-samWithReceiver.annotation(HasImplicitReceiver::class.qualifiedName!!)
+signing {
+    val signingKey: String? by project
+    val signingPassword: String? by project
 
-kotlin.compilerOptions.freeCompilerArgs.add("-Xjvm-default=all")
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    publishing.publications.configureEach(::sign)
+    tasks.withType<Sign>().configureEach { enabled = signingKey != null }
+}
 
 testing.suites.withType<JvmTestSuite> {
     useKotlinTest(libs.versions.kotlin)
