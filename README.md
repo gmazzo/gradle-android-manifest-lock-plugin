@@ -1,6 +1,7 @@
 ![GitHub](https://img.shields.io/github/license/gmazzo/gradle-android-manifest-lock-plugin)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.gmazzo.android.manifest.lock/io.github.gmazzo.android.manifest.lock.gradle.plugin)](https://central.sonatype.com/artifact/io.github.gmazzo.android.manifest.lock/io.github.gmazzo.android.manifest.lock.gradle.plugin)
 [![Gradle Plugin Portal](https://img.shields.io/gradle-plugin-portal/v/io.github.gmazzo.android.manifest.lock)](https://plugins.gradle.org/plugin/io.github.gmazzo.android.manifest.lock)
-[![Build Status](https://github.com/gmazzo/gradle-android-manifest-lock-plugin/actions/workflows/build.yaml/badge.svg)](https://github.com/gmazzo/gradle-android-manifest-lock-plugin/actions/workflows/build.yaml)
+[![Build Status](https://github.com/gmazzo/gradle-android-manifest-lock-plugin/actions/workflows/ci-cd.yaml/badge.svg)](https://github.com/gmazzo/gradle-android-manifest-lock-plugin/actions/workflows/ci-cd.yaml)
 [![Coverage](https://codecov.io/gh/gmazzo/gradle-android-manifest-lock-plugin/branch/main/graph/badge.svg?token=D5cDiPWvcS)](https://codecov.io/gh/gmazzo/gradle-android-manifest-lock-plugin)
 [![Users](https://img.shields.io/badge/users_by-Sourcegraph-purple)](https://sourcegraph.com/search?q=content:io.github.gmazzo.android.manifest.lock+-repo:github.com/gmazzo/gradle-android-manifest-lock-plugin)
 
