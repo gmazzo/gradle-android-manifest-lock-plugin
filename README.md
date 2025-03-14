@@ -6,17 +6,24 @@
 [![Users](https://img.shields.io/badge/users_by-Sourcegraph-purple)](https://sourcegraph.com/search?q=content:io.github.gmazzo.android.manifest.lock+-repo:github.com/gmazzo/gradle-android-manifest-lock-plugin)
 
 # gradle-android-manifest-lock-plugin
-A gradle Gradle to control what Permissions, SDK-level, and other PlayStore listing-sensitive settings is added into the Android Manifest
+
+A gradle Gradle to control what Permissions, SDK-level, and other PlayStore listing-sensitive
+settings is added into the Android Manifest
 
 # Usage
+
 Apply the plugin at the any Android (application or library) module:
+
 ```kotlin
 plugins {
-    id("io.github.gmazzo.android.manifest.lock") version "<latest>" 
+    id("io.github.gmazzo.android.manifest.lock") version "<latest>"
 }
 ```
+
 The `androidManifestLock` task will be added to the build, and automatically bind to `check`.
-When run, an `src/main/AndroidManifest.lock` (default location) file will be created with a content similar to:
+When run, an `src/main/AndroidManifest.lock` (default location) file will be created with a content
+similar to:
+
 ```yaml
 main:
   namespace: io.github.gmazzo.android.manifest.lock.demo
@@ -103,11 +110,14 @@ variants:
             - x86_64
 fingerprint: 3ea645556e4cce4a3eebbb7543291eec
 ```
-You can later commit this file to keep track and detect unnoticed changes (by introducing/bumping a 3rd party dependency for instance).
+
+You can later commit this file to keep track and detect unnoticed changes (by introducing/bumping a
+3rd party dependency for instance).
 
 ## Configuration
 
 ### Changing the location of the lock file
+
 ```kotlin
 android {
     manifestLock {
@@ -117,9 +127,13 @@ android {
 ```
 
 ### Customizing the content of the lock file
-There are many configuration options to customize the content of the lock file, such as: `sdkVersion`, `permissions`, `features`, `libraries` and `exports`.
 
-For instance, to remove the `exports` section from the lock file, you can set the `exports` property to `false`:
+There are many configuration options to customize the content of the lock file, such as:
+`sdkVersion`, `permissions`, `features`, `libraries` and `exports`.
+
+For instance, to remove the `exports` section from the lock file, you can set the `exports` property
+to `false`:
+
 ```kotlin
 android {
     manifestLock {
@@ -131,9 +145,12 @@ android {
 ```
 
 ### Failing if lock has changes on CI
-You can run `./gradlew androidManifestLock --fail-on-lock-change` to make the build fail if the lock file has changed.
+
+You can run `./gradlew androidManifestLock --fail-on-lock-change` to make the build fail if the lock
+file has changed.
 
 To make this behavior default on CI, you can use the following configuration:
+
 ```kotlin
 android {
     manifestLock {

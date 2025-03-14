@@ -11,7 +11,8 @@ plugins {
 }
 
 group = "io.github.gmazzo.android.manifest.lock"
-description = "A gradle Gradle to control what Permissions, SDK-level, and other PlayStore listing sensitive settings is added into the Android Manifest"
+description =
+    "A gradle Gradle to control what Permissions, SDK-level, and other PlayStore listing sensitive settings is added into the Android Manifest"
 version = scmVersion.version
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(11))

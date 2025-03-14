@@ -1,8 +1,8 @@
 package io.github.gmazzo.android.manifest.lock
 
 import io.github.gmazzo.android.manifest.lock.Manifest.Entry
-import org.junit.jupiter.api.Assertions.assertEquals
 import kotlin.test.Test
+import org.junit.jupiter.api.Assertions.assertEquals
 
 class ManifestLockFactoryTest {
 
@@ -126,13 +126,19 @@ class ManifestLockFactoryTest {
             mapOf(
                 "debug" to main.copy(
                     minSDK = 10,
-                    features = main.features!! + Entry("feature2", mapOf("required" to setOf("false"))) + Entry("debugFeature1"),
+                    features = main.features!! + Entry(
+                        "feature2",
+                        mapOf("required" to setOf("false"))
+                    ) + Entry("debugFeature1"),
                     exports = mapOf("activity" to main.exports!!["activity"]!! + "debugExport1") + main.exports.filterKeys { it != "activity" },
                 ),
                 "release" to main.copy(
                     namespace = "org.test.app.release",
                     permissions = main.permissions!! + Entry("releasePermission1"),
-                    features = main.features + Entry("releaseFeature1" , mapOf("required" to setOf("true"))),
+                    features = main.features + Entry(
+                        "releaseFeature1",
+                        mapOf("required" to setOf("true"))
+                    ),
                     libraries = main.libraries!! + Entry("releaseLib1"),
                 ),
             )

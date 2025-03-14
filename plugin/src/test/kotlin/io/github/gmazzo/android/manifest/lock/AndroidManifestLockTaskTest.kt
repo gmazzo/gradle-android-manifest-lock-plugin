@@ -1,14 +1,14 @@
 package io.github.gmazzo.android.manifest.lock
 
+import java.io.File
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import org.gradle.kotlin.dsl.creating
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.newInstance
 import org.gradle.kotlin.dsl.register
 import org.gradle.testfixtures.ProjectBuilder
-import java.io.File
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class AndroidManifestLockTaskTest {
 

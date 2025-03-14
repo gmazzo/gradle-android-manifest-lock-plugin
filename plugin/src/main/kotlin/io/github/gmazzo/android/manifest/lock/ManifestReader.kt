@@ -1,13 +1,13 @@
 package io.github.gmazzo.android.manifest.lock
 
-import org.w3c.dom.Node
-import org.w3c.dom.NodeList
 import java.io.File
 import javax.xml.namespace.NamespaceContext
 import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.xpath.XPathConstants
 import javax.xml.xpath.XPathExpression
 import javax.xml.xpath.XPathFactory
+import org.w3c.dom.Node
+import org.w3c.dom.NodeList
 
 internal object ManifestReader {
     private const val ANDROID_NS = "http://schemas.android.com/apk/res/android"
