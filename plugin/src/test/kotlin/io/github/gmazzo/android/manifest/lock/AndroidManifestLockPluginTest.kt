@@ -1,9 +1,9 @@
 package io.github.gmazzo.android.manifest.lock
 
-import org.gradle.kotlin.dsl.apply
-import org.gradle.testfixtures.ProjectBuilder
 import kotlin.test.Test
 import kotlin.test.assertNotNull
+import org.gradle.kotlin.dsl.apply
+import org.gradle.testfixtures.ProjectBuilder
 
 class AndroidManifestLockPluginTest {
 

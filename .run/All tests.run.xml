@@ -1,5 +1,6 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="All tests" type="GradleRunConfiguration" factoryName="Gradle" activateToolWindowBeforeRun="false">
+  <configuration default="false" name="All tests" type="GradleRunConfiguration" factoryName="Gradle"
+    activateToolWindowBeforeRun="false">
     <ExternalSystemSettings>
       <option name="executionName" />
       <option name="externalProjectPath" value="$PROJECT_DIR$" />

@@ -4,20 +4,20 @@ import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.variant.AndroidComponentsExtension
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType
+import java.io.File
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.artifacts.type.ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE
-import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFile
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.provider.Provider
-import org.gradle.kotlin.dsl.*
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.mapProperty
 import org.gradle.kotlin.dsl.provideDelegate
-import java.io.File
+import org.gradle.kotlin.dsl.register
+import org.gradle.kotlin.dsl.registerTransform
 
 class AndroidManifestLockPlugin : Plugin<Project> {
 
@@ -45,7 +45,12 @@ class AndroidManifestLockPlugin : Plugin<Project> {
                 it.name,
                 extension.content.nativeLibraries.map { enabled ->
                     it.runtimeConfiguration.incoming
-                        .artifactView { attributes.attribute(ARTIFACT_TYPE_ATTRIBUTE, JNI_REPORT_ARTIFACT_TYPE) }
+                        .artifactView {
+                            attributes.attribute(
+                                ARTIFACT_TYPE_ATTRIBUTE,
+                                JNI_REPORT_ARTIFACT_TYPE
+                            )
+                        }
                         .artifacts
                 }
             )
@@ -53,8 +58,9 @@ class AndroidManifestLockPlugin : Plugin<Project> {
 
         val lockTask = project.tasks.register<AndroidManifestLockTask>("androidManifestLock") {
             variantManifests.set(manifests)
-            variantRuntimeClasspath.set(extension.content.nativeLibraries
-                .flatMap { if (it) runtimeDependencies else null })
+            variantRuntimeClasspath.set(
+                extension.content.nativeLibraries
+                    .flatMap { if (it) runtimeDependencies else null })
             manifestContent.set(extension.content)
             lockFile.set(extension.lockFile)
             failOnLockChange.set(extension.failOnLockChange)

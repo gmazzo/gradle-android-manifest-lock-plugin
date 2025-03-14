@@ -1,9 +1,9 @@
 package io.github.gmazzo.android.manifest.lock
 
 import io.github.gmazzo.android.manifest.lock.Manifest.Entry
+import java.io.File
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import java.io.File
 
 class ManifestReaderTest {
 
@@ -40,7 +40,10 @@ class ManifestReaderTest {
                 Entry("android.permission.MODIFY_AUDIO_SETTINGS"),
                 Entry("android.permission.POST_NOTIFICATIONS"),
                 Entry("android.permission.READ_CONTACTS"),
-                Entry("android.permission.READ_EXTERNAL_STORAGE", mapOf("maxSdkVersion" to setOf("32"))),
+                Entry(
+                    "android.permission.READ_EXTERNAL_STORAGE",
+                    mapOf("maxSdkVersion" to setOf("32"))
+                ),
                 Entry("android.permission.READ_MEDIA_IMAGES"),
                 Entry("android.permission.READ_MEDIA_VIDEO"),
                 Entry("android.permission.RECEIVE_BOOT_COMPLETED"),
@@ -48,7 +51,10 @@ class ManifestReaderTest {
                 Entry("android.permission.REORDER_TASKS"),
                 Entry("android.permission.VIBRATE"),
                 Entry("android.permission.WAKE_LOCK"),
-                Entry("android.permission.WRITE_EXTERNAL_STORAGE", mapOf("maxSdkVersion" to setOf("28"))),
+                Entry(
+                    "android.permission.WRITE_EXTERNAL_STORAGE",
+                    mapOf("maxSdkVersion" to setOf("28"))
+                ),
                 Entry("com.google.android.c2dm.permission.RECEIVE"),
                 Entry("com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE"),
                 Entry("com.google.android.providers.gsf.permission.READ_GSERVICES")
@@ -57,7 +63,12 @@ class ManifestReaderTest {
 
         assertEquals(
             listOf(
-                Entry(attributes = mapOf("glEsVersion" to setOf("0x00020000"), "required" to setOf("true"))),
+                Entry(
+                    attributes = mapOf(
+                        "glEsVersion" to setOf("0x00020000"),
+                        "required" to setOf("true")
+                    )
+                ),
                 Entry("android.hardware.camera", mapOf("required" to setOf("false"))),
                 Entry("android.hardware.camera.autofocus", mapOf("required" to setOf("false"))),
                 Entry("android.hardware.telephony", mapOf("required" to setOf("false"))),

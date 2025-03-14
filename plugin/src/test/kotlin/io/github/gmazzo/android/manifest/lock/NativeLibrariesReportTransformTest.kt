@@ -2,6 +2,9 @@ package io.github.gmazzo.android.manifest.lock
 
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType
 import io.github.gmazzo.android.manifest.lock.AndroidManifestLockPlugin.Companion.JNI_REPORT_ARTIFACT_TYPE
+import java.io.File
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import org.gradle.api.Action
 import org.gradle.api.artifacts.type.ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE
 import org.gradle.api.problems.Problem
@@ -22,10 +25,6 @@ import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.registerTransform
 import org.gradle.kotlin.dsl.repositories
 import org.gradle.testfixtures.ProjectBuilder
-import java.io.File
-import java.lang.RuntimeException
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class NativeLibrariesReportTransformTest {
 

@@ -16,6 +16,9 @@ internal data class Manifest(
 ) {
 
     @Serializable(with = ManifestEntrySerializer::class)
-    data class Entry(val name: String? = null, val attributes: Map<String, Collection<String>>? = null)
+    data class Entry(
+        val name: String? = null,
+        val attributes: Map<String, Collection<String>>? = null
+    )
 
 }

@@ -1,22 +1,22 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-configuration android:reqFiveWayNav="true" />
+  <uses-configuration android:reqFiveWayNav="true" />
 
-    <application android:icon="@drawable/ic_android">
+  <application android:icon="@drawable/ic_android">
 
-        <uses-native-library
-            android:name="libnative-lib.so"
-            android:required="false" />
+    <uses-native-library
+      android:name="libnative-lib.so"
+      android:required="false" />
 
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+    <activity
+      android:name=".MainActivity"
+      android:exported="true">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
 
-    </application>
+  </application>
 
 </manifest>
