@@ -89,4 +89,11 @@ variants:
         - armeabi-v7a
         - x86
         - x86_64
-fingerprint: fd65af36c15f3358f93d1f60da5d15d5
+    - libdatastore_shared_counter:
+        requiredBy: androidx.datastore:datastore-core-android
+        abis:
+        - arm64-v8a
+        - armeabi-v7a
+        - x86
+        - x86_64
+fingerprint: 452e547a3137427f08e373ad8a9e3ba5
