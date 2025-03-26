@@ -60,10 +60,10 @@ main:
     activity:
     - com.testapp.onboarding.splash.SplashActivity
     - com.testapp.payments.core.processout.ProcessOutCallbackActivity
-    service:
-    - androidx.work.impl.background.systemjob.SystemJobService
     receiver:
     - androidx.work.impl.diagnostics.DiagnosticsReceiver
+    service:
+    - androidx.work.impl.background.systemjob.SystemJobService
 variants:
   debug:
     nativeLibraries:
@@ -72,4 +72,4 @@ variants:
         abis:
         - abi1
         - abi2
-fingerprint: eb482c96ab82e36f75839040b64d732f
+fingerprint: b6114969548edade64224108f3ab3ab3
