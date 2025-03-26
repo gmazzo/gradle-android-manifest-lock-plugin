@@ -35,11 +35,11 @@ main:
   exports:
     activity:
     - io.github.gmazzo.android.manifest.lock.demo.MainActivity
+    receiver:
+    - androidx.profileinstaller.ProfileInstallReceiver
+    - androidx.work.impl.diagnostics.DiagnosticsReceiver
     service:
     - androidx.work.impl.background.systemjob.SystemJobService
-    receiver:
-    - androidx.work.impl.diagnostics.DiagnosticsReceiver
-    - androidx.profileinstaller.ProfileInstallReceiver
 variants:
   debug:
     configurations:
@@ -96,4 +96,4 @@ variants:
         - armeabi-v7a
         - x86
         - x86_64
-fingerprint: 452e547a3137427f08e373ad8a9e3ba5
+fingerprint: 4ea9759bc18266cd2c03cfb36466ad1d

@@ -1,6 +1,8 @@
 package io.github.gmazzo.android.manifest.lock
 
 import java.io.File
+import java.util.TreeMap
+import java.util.TreeSet
 import javax.xml.namespace.NamespaceContext
 import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.xpath.XPathConstants
@@ -51,9 +53,12 @@ internal object ManifestReader {
             exports = if (readExports) getExports
                 .collect(source)
                 .groupingBy { it.nodeName }
-                .fold(emptySet<String>()) { acc, node ->
-                    acc + node.attributes.getNamedItemNS(ANDROID_NS, "name").nodeValue
-                } else null
+                .aggregateTo(TreeMap<String, TreeSet<String>>()) { _, acc, node, _ ->
+                    val set = acc ?: TreeSet<String>()
+                    set += node.attributes.getNamedItemNS(ANDROID_NS, "name").nodeValue
+                    set
+                }
+                .toSortedMap() else null
         )
     }
 
