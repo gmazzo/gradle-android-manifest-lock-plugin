@@ -3,8 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.samReceiver)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.dokka)
-    alias(libs.plugins.axion.release)
     alias(libs.plugins.mavenPublish)
+    alias(libs.plugins.gitVersion)
     alias(libs.plugins.gradle.pluginPublish)
     alias(libs.plugins.publicationsReport)
     jacoco
@@ -13,7 +13,6 @@ plugins {
 group = "io.github.gmazzo.android.manifest.lock"
 description =
     "A gradle Gradle to control what Permissions, SDK-level, and other PlayStore listing sensitive settings is added into the Android Manifest"
-version = scmVersion.version
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(11))
 kotlin.compilerOptions.freeCompilerArgs.add("-Xjvm-default=all")
