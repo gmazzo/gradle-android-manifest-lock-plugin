@@ -1,0 +1,70 @@
+main:
+  namespace: io.github.gmazzo.android.manifest.lock.demo.lib
+  minSDK: 24
+  nativeLibraries:
+  - libimage_processing_util_jni:
+      requiredBy: androidx.camera:camera-core
+      abis:
+      - arm64-v8a
+      - armeabi-v7a
+      - x86
+      - x86_64
+  - libnative-lib.so:
+      requiredBy: manifest
+      required: false
+  - libsurface_util_jni:
+      requiredBy: androidx.camera:camera-core
+      abis:
+      - arm64-v8a
+      - armeabi-v7a
+      - x86
+      - x86_64
+  exports:
+    activity:
+    - io.github.gmazzo.android.manifest.lock.demo.lib.LibActivity
+variants:
+  debug:
+    configurations:
+    - reqFiveWayNav: true
+      reqNavigation: trackball
+  release:
+    configurations:
+    - reqFiveWayNav: true
+      reqKeyboardType: qwerty
+    nativeLibraries:
+    - libcrashlytics:
+        requiredBy: com.google.firebase:firebase-crashlytics-ndk
+        abis:
+        - arm64-v8a
+        - armeabi-v7a
+        - x86
+        - x86_64
+    - libcrashlytics-common:
+        requiredBy: com.google.firebase:firebase-crashlytics-ndk
+        abis:
+        - arm64-v8a
+        - armeabi-v7a
+        - x86
+        - x86_64
+    - libcrashlytics-handler:
+        requiredBy: com.google.firebase:firebase-crashlytics-ndk
+        abis:
+        - arm64-v8a
+        - armeabi-v7a
+        - x86
+        - x86_64
+    - libcrashlytics-trampoline:
+        requiredBy: com.google.firebase:firebase-crashlytics-ndk
+        abis:
+        - arm64-v8a
+        - armeabi-v7a
+        - x86
+        - x86_64
+    - libdatastore_shared_counter:
+        requiredBy: androidx.datastore:datastore-core-android
+        abis:
+        - arm64-v8a
+        - armeabi-v7a
+        - x86
+        - x86_64
+fingerprint: 484df29bdd5d068b7efbcbff70d3bdd4

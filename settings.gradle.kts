@@ -16,4 +16,5 @@ dependencyResolutionManagement {
 rootProject.name = "gradle-android-manifest-lock-plugin"
 
 includeBuild("plugin")
-include("demo")
+include("demo:app")
+include("demo:lib")
