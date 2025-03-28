@@ -1,0 +1,22 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <uses-configuration android:reqFiveWayNav="true" />
+
+  <application>
+
+    <uses-native-library
+      android:name="libnative-lib.so"
+      android:required="false" />
+
+    <activity
+      android:name=".LibActivity"
+      android:exported="true">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+
+  </application>
+
+</manifest>
