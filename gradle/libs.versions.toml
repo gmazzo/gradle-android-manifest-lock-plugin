@@ -7,7 +7,7 @@ diffUtils = { module = "io.github.java-diff-utils:java-diff-utils", version = "4
 kotlin-serialization-yaml = { module = "com.charleskorn.kaml:kaml", version = "0.73.0" }
 
 # `demo` project dependencies
-androidx-camera = { module = "androidx.camera:camera-core", version = "1.4.1" }
+androidx-camera = { module = "androidx.camera:camera-core", version = "1.4.2" }
 androidx-workManager = { module = "androidx.work:work-runtime-ktx", version = "2.10.0" }
 firebase-crashlytics-ndk = { module = "com.google.firebase:firebase-crashlytics-ndk", version = "19.4.2" }
 google-services-maps = { module = "com.google.android.gms:play-services-maps", version = "19.1.0" }
