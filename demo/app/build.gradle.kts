@@ -32,9 +32,3 @@ dependencies {
     releaseImplementation(libs.google.services.maps)
     releaseImplementation(libs.firebase.crashlytics.ndk)
 }
-
-android {
-    manifestLock {
-        failOnLockChange = providers.environmentVariable("CI").map(String::toBoolean).orElse(false)
-    }
-}
