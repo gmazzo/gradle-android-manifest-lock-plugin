@@ -5,6 +5,8 @@
 [![Coverage](https://codecov.io/gh/gmazzo/gradle-android-manifest-lock-plugin/branch/main/graph/badge.svg?token=D5cDiPWvcS)](https://codecov.io/gh/gmazzo/gradle-android-manifest-lock-plugin)
 [![Users](https://img.shields.io/badge/users_by-Sourcegraph-purple)](https://sourcegraph.com/search?q=content:io.github.gmazzo.android.manifest.lock+-repo:github.com/gmazzo/gradle-android-manifest-lock-plugin)
 
+[![Contributors](https://contrib.rocks/image?repo=gmazzo/gradle-android-manifest-lock-plugin)](https://github.com/gmazzo/gradle-android-manifest-lock-plugin/graphs/contributors)
+
 # gradle-android-manifest-lock-plugin
 
 A gradle Gradle to control what Permissions, SDK-level, and other PlayStore listing-sensitive
