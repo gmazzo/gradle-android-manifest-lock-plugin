@@ -15,7 +15,7 @@ description =
     "A gradle Gradle to control what Permissions, SDK-level, and other PlayStore listing sensitive settings is added into the Android Manifest"
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(11))
-kotlin.compilerOptions.freeCompilerArgs.add("-Xjvm-default=all")
+kotlin.compilerOptions.freeCompilerArgs.add("-Xjvm-default=all-compatibility")
 samWithReceiver.annotation(HasImplicitReceiver::class.qualifiedName!!)
 
 val originUrl = providers
