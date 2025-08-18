@@ -14,7 +14,7 @@ group = "io.github.gmazzo.android.manifest.lock"
 description =
     "A gradle Gradle to control what Permissions, SDK-level, and other PlayStore listing sensitive settings is added into the Android Manifest"
 
-java.toolchain.languageVersion.set(JavaLanguageVersion.of(11))
+java.toolchain.languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get()))
 kotlin.compilerOptions.freeCompilerArgs.add("-Xjvm-default=all-compatibility")
 samWithReceiver.annotation(HasImplicitReceiver::class.qualifiedName!!)
 
@@ -86,7 +86,6 @@ testing.suites.withType<JvmTestSuite> {
 
 tasks.test {
     environment("TEMP_DIR", temporaryDir)
-    javaLauncher = javaToolchains.launcherFor { languageVersion = JavaLanguageVersion.of(17) }
     finalizedBy(tasks.jacocoTestReport)
 }
 

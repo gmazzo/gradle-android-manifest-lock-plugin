@@ -4,7 +4,7 @@ plugins {
     id("io.github.gmazzo.android.manifest.lock")
 }
 
-java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+java.toolchain.languageVersion.set(JavaLanguageVersion.of(libs.versions.java.get()))
 
 android {
     namespace = "io.github.gmazzo.android.manifest.lock.demo.lib"
