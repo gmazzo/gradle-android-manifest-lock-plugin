@@ -1,10 +1,11 @@
 package io.github.gmazzo.android.manifest.lock
 
 import com.android.build.api.artifact.SingleArtifact
+import com.android.build.api.dsl.AndroidSourceSet
 import com.android.build.api.variant.AndroidComponentsExtension
-import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType
 import java.io.File
+import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ArtifactCollection
@@ -18,15 +19,19 @@ import org.gradle.kotlin.dsl.mapProperty
 import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.registerTransform
+import org.gradle.kotlin.dsl.withGroovyBuilder
 
 class AndroidManifestLockPlugin : Plugin<Project> {
 
     override fun apply(project: Project) = project.plugins.withId("com.android.base") {
-        val android: BaseExtension by project.extensions
+        val android: ExtensionAware by project.extensions
         val androidComponents: AndroidComponentsExtension<*, *, *> by project.extensions
 
-        val manifest = android.sourceSets.named("main").map { it.manifest.srcFile }
-        val extension = project.createExtension(android, manifest)
+        val defaultLockFile = android.mainManifest.map { file ->
+            val lock = file.resolveSibling("${file.nameWithoutExtension}.lock.yaml")
+            project.layout.projectDirectory.file(lock.path)
+        }
+        val extension = android.createExtension(defaultLockFile)
         val manifests = project.objects.mapProperty<String, RegularFile>()
         val runtimeDependencies = project.objects.mapProperty<String, ArtifactCollection>()
 
@@ -71,9 +76,8 @@ class AndroidManifestLockPlugin : Plugin<Project> {
         }
     }
 
-    private fun Project.createExtension(android: BaseExtension, manifest: Provider<File>) =
-        (android as ExtensionAware)
-            .extensions
+    private fun ExtensionAware.createExtension(defaultLockFile: Provider<RegularFile>) =
+        extensions
             .create<AndroidManifestLockExtension>("manifestLock")
             .apply {
 
@@ -110,10 +114,7 @@ class AndroidManifestLockPlugin : Plugin<Project> {
                 }
 
                 lockFile
-                    .convention(manifest.map { file ->
-                        val lock = file.resolveSibling("${file.nameWithoutExtension}.lock.yaml")
-                        layout.projectDirectory.file(lock.path)
-                    })
+                    .convention(defaultLockFile)
                     .finalizeValueOnRead()
 
                 failOnLockChange
@@ -121,6 +122,12 @@ class AndroidManifestLockPlugin : Plugin<Project> {
                     .finalizeValueOnRead()
 
             }
+
+    @Suppress("UNCHECKED_CAST")
+    private val ExtensionAware.mainManifest: Provider<File>
+        get() = withGroovyBuilder { getProperty("sourceSets") as NamedDomainObjectContainer<AndroidSourceSet> }
+            .named("main")
+            .map { it.manifest.withGroovyBuilder { getProperty("srcFile") as File } }
 
     companion object {
         const val JNI_REPORT_ARTIFACT_TYPE = "jniReport"
