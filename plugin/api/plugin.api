@@ -1,0 +1,44 @@
+public abstract interface class io/github/gmazzo/android/manifest/lock/AndroidManifestLockExtension {
+	public fun content (Lorg/gradle/api/Action;)Lio/github/gmazzo/android/manifest/lock/AndroidManifestLockExtension;
+	public abstract fun getContent ()Lio/github/gmazzo/android/manifest/lock/AndroidManifestLockExtension$Content;
+	public abstract fun getFailOnLockChange ()Lorg/gradle/api/provider/Property;
+	public abstract fun getLockFile ()Lorg/gradle/api/file/RegularFileProperty;
+}
+
+public abstract interface class io/github/gmazzo/android/manifest/lock/AndroidManifestLockExtension$Content {
+	public abstract fun getConfigurations ()Lorg/gradle/api/provider/Property;
+	public abstract fun getExports ()Lorg/gradle/api/provider/Property;
+	public abstract fun getFeatures ()Lorg/gradle/api/provider/Property;
+	public abstract fun getLibraries ()Lorg/gradle/api/provider/Property;
+	public abstract fun getNativeLibraries ()Lorg/gradle/api/provider/Property;
+	public abstract fun getPermissions ()Lorg/gradle/api/provider/Property;
+	public abstract fun getSdkVersion ()Lorg/gradle/api/provider/Property;
+}
+
+public final class io/github/gmazzo/android/manifest/lock/AndroidManifestLockPlugin : org/gradle/api/Plugin {
+	public static final field Companion Lio/github/gmazzo/android/manifest/lock/AndroidManifestLockPlugin$Companion;
+	public static final field JNI_REPORT_ARTIFACT_TYPE Ljava/lang/String;
+	public fun <init> ()V
+	public synthetic fun apply (Ljava/lang/Object;)V
+	public fun apply (Lorg/gradle/api/Project;)V
+}
+
+public final class io/github/gmazzo/android/manifest/lock/AndroidManifestLockPlugin$Companion {
+}
+
+public abstract class io/github/gmazzo/android/manifest/lock/AndroidManifestLockTask : org/gradle/api/DefaultTask {
+	public fun <init> ()V
+	public final fun generateLock ()V
+	public abstract fun getFailOnLockChange ()Lorg/gradle/api/provider/Property;
+	public abstract fun getLockFile ()Lorg/gradle/api/file/RegularFileProperty;
+	public abstract fun getManifestContent ()Lorg/gradle/api/provider/Property;
+	public abstract fun getVariantManifests ()Lorg/gradle/api/provider/MapProperty;
+	public abstract fun getVariantRuntimeClasspath ()Lorg/gradle/api/provider/MapProperty;
+}
+
+public abstract class io/github/gmazzo/android/manifest/lock/NativeLibrariesReportTransform : org/gradle/api/artifacts/transform/TransformAction {
+	public fun <init> ()V
+	public abstract fun getInputAarFile ()Lorg/gradle/api/provider/Provider;
+	public fun transform (Lorg/gradle/api/artifacts/transform/TransformOutputs;)V
+}
+
