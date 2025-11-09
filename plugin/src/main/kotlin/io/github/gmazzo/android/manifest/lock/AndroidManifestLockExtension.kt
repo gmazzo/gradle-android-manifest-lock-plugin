@@ -6,14 +6,14 @@ import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Nested
 
-interface AndroidManifestLockExtension {
+public interface AndroidManifestLockExtension {
 
     /**
      * The location of the generated lock file.
      *
      * Defaults to `src/main/AndroidManifest.lock`
      */
-    val lockFile: RegularFileProperty
+    public val lockFile: RegularFileProperty
 
     /**
      * The build will fail if the [lockFile] has changed based on the current manifest inputs.
@@ -22,36 +22,36 @@ interface AndroidManifestLockExtension {
      *
      * Defaults to `false`
      */
-    val failOnLockChange: Property<Boolean>
+    public val failOnLockChange: Property<Boolean>
 
     @get:Nested
-    val content: Content
+    public val content: Content
 
-    fun content(action: Action<Content>) =
+    public fun content(action: Action<Content>): AndroidManifestLockExtension =
         apply { action.execute(content) }
 
-    interface Content {
+    public interface Content {
 
         @get:Input
-        val sdkVersion: Property<Boolean>
+        public val sdkVersion: Property<Boolean>
 
         @get:Input
-        val configurations: Property<Boolean>
+        public val configurations: Property<Boolean>
 
         @get:Input
-        val permissions: Property<Boolean>
+        public val permissions: Property<Boolean>
 
         @get:Input
-        val features: Property<Boolean>
+        public val features: Property<Boolean>
 
         @get:Input
-        val libraries: Property<Boolean>
+        public val libraries: Property<Boolean>
 
         @get:Input
-        val nativeLibraries: Property<Boolean>
+        public val nativeLibraries: Property<Boolean>
 
         @get:Input
-        val exports: Property<Boolean>
+        public val exports: Property<Boolean>
 
     }
 
