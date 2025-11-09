@@ -27,10 +27,10 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.options.Option
 
 @CacheableTask
-abstract class AndroidManifestLockTask : DefaultTask() {
+public abstract class AndroidManifestLockTask : DefaultTask() {
 
     @get:Internal
-    abstract val variantManifests: MapProperty<String, RegularFile>
+    public abstract val variantManifests: MapProperty<String, RegularFile>
 
     @get:Input
     internal val variantManifestsFileNames =
@@ -42,7 +42,7 @@ abstract class AndroidManifestLockTask : DefaultTask() {
         variantManifests.map { it.values }
 
     @get:Internal
-    abstract val variantRuntimeClasspath: MapProperty<String, ArtifactCollection>
+    public abstract val variantRuntimeClasspath: MapProperty<String, ArtifactCollection>
 
     @get:Input
     internal val variantRuntimeClasspathFileNames =
@@ -56,22 +56,22 @@ abstract class AndroidManifestLockTask : DefaultTask() {
         variantRuntimeClasspath.map { it.values.flatMap { it.artifactFiles } }
 
     @get:Nested
-    abstract val manifestContent: Property<AndroidManifestLockExtension.Content>
+    public abstract val manifestContent: Property<AndroidManifestLockExtension.Content>
 
     @get:OutputFile
-    abstract val lockFile: RegularFileProperty
+    public abstract val lockFile: RegularFileProperty
 
     @get:Input
     @get:Option(
         option = "fail-on-lock-change",
         description = "Fail the build if the lock file has changed"
     )
-    abstract val failOnLockChange: Property<Boolean>
+    public abstract val failOnLockChange: Property<Boolean>
 
     private val rootDir = project.rootDir
 
     @TaskAction
-    fun generateLock() {
+    public fun generateLock() {
         val contentSpec = manifestContent.get()
         val nativeLibraries by lazy { computeNativeLibraries() }
         val manifests = variantManifests.get()

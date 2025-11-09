@@ -17,13 +17,13 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 
 @CacheableTransform
-abstract class NativeLibrariesReportTransform : TransformAction<TransformParameters.None> {
+public abstract class NativeLibrariesReportTransform : TransformAction<TransformParameters.None> {
 
     private val jniRegEx = "jni/(.*)/(.*)\\.so".toRegex()
 
     @get:InputArtifact
     @get:PathSensitive(PathSensitivity.NONE)
-    abstract val inputAarFile: Provider<FileSystemLocation>
+    public abstract val inputAarFile: Provider<FileSystemLocation>
 
     override fun transform(outputs: TransformOutputs) {
         val file = inputAarFile.get().asFile

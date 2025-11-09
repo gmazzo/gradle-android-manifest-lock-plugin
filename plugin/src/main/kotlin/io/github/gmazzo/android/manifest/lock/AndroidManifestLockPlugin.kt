@@ -21,9 +21,9 @@ import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.registerTransform
 import org.gradle.kotlin.dsl.withGroovyBuilder
 
-class AndroidManifestLockPlugin : Plugin<Project> {
+public class AndroidManifestLockPlugin : Plugin<Project> {
 
-    override fun apply(project: Project) = project.plugins.withId("com.android.base") {
+    override fun apply(project: Project): Unit = project.plugins.withId("com.android.base") {
         val android: ExtensionAware by project.extensions
         val androidComponents: AndroidComponentsExtension<*, *, *> by project.extensions
 
@@ -129,8 +129,8 @@ class AndroidManifestLockPlugin : Plugin<Project> {
             .named("main")
             .map { it.manifest.withGroovyBuilder { getProperty("srcFile") as File } }
 
-    companion object {
-        const val JNI_REPORT_ARTIFACT_TYPE = "jniReport"
+    public companion object {
+        public const val JNI_REPORT_ARTIFACT_TYPE: String = "jniReport"
     }
 
 }
