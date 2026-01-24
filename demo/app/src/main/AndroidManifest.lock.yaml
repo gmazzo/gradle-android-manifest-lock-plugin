@@ -11,9 +11,6 @@ main:
   features:
   - glEsVersion: 0x00020000
     required: true
-  libraries:
-  - org.apache.http.legacy:
-      required: false
   nativeLibraries:
   - libimage_processing_util_jni:
       requiredBy: androidx.camera:camera-core
@@ -96,4 +93,4 @@ variants:
         - armeabi-v7a
         - x86
         - x86_64
-fingerprint: 4ea9759bc18266cd2c03cfb36466ad1d
+fingerprint: 10900596cdf4c3779c3d4f207b7b0719
