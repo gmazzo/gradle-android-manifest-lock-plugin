@@ -1,7 +1,7 @@
 main:
   namespace: io.github.gmazzo.android.manifest.lock.demo
   minSDK: 24
-  targetSDK: 35
+  targetSDK: 36
   permissions:
   - android.permission.ACCESS_NETWORK_STATE
   - android.permission.FOREGROUND_SERVICE
@@ -93,4 +93,4 @@ variants:
         - armeabi-v7a
         - x86
         - x86_64
-fingerprint: 10900596cdf4c3779c3d4f207b7b0719
+fingerprint: 1233ad6539769ccaba9262b3b265a071
