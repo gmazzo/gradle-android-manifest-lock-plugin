@@ -4,7 +4,7 @@ kotlin = "2.3.21"
 agp = "9.2.1"
 
 [libraries]
-diffUtils = { module = "io.github.java-diff-utils:java-diff-utils", version = "4.16" }
+diffUtils = { module = "io.github.java-diff-utils:java-diff-utils", version = "4.17" }
 kotlin-serialization-yaml = { module = "com.charleskorn.kaml:kaml", version = "0.104.0" }
 
 # `demo` project dependencies
